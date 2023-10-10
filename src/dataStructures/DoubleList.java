@@ -302,7 +302,7 @@ public class DoubleList<E> implements List<E>
         //TOD: Left as an exercise.
         currentSize++;
         prevNode.setNext(newNode);
-        prevNode.setPrevious(newNode);
+        nextNode.setPrevious(newNode);
     }
 
 
@@ -457,10 +457,24 @@ public class DoubleList<E> implements List<E>
     public void append( DoubleList<E> list )
     {
         //TOD: Left as an exercise.
-        while( !list.isEmpty() ){
-            this.addLast(list.removeFirst());
-            currentSize++;
+        if(list.isEmpty()){
+            return;
         }
+
+        if(this.isEmpty()){
+            head = list.head;
+            tail = list.tail;
+        } else {
+            tail.setNext(list.head);
+            list.head.setPrevious(tail);
+            tail = list.tail;
+        }
+
+        currentSize += list.size();
+
+        list.head = null;
+        list.tail = null;
+        list.currentSize = 0;
     }
 
 
