@@ -1,11 +1,14 @@
 import artauctions.ArtAuctionsSystem;
 import artauctions.ArtAuctionsSystemClass;
+import artauctions.RegularUser;
 import artauctions.exceptions.*;
 
 import java.io.*;
 import java.util.Scanner;
 
 /**
+ * Main class
+ *
  * @author Alexandre Peres 61615
  */
 public class Main {
@@ -199,7 +202,7 @@ public class Main {
         in.nextLine();
 
         try{
-            data.addUser();
+            data.addUser( login, name, age, email );
             System.out.println( Msg.ADDED_USER.getMsg() );
         } catch( UnderageUserException e ){
             System.out.println( ErrorMsg.UNDERAGE_USER.getMsg() );
@@ -286,8 +289,8 @@ public class Main {
         in.nextLine();
 
         try{
-            data.infoUser();
-            //System.out.printf( Msg.USER_INFO.getMsg(), );
+            RegularUser user = data.infoUser( login );
+            System.out.printf( Msg.USER_INFO.getMsg(), user.getLogin(), user.getName(), user.getAge(), user.getEmail() );
         } catch (UserNotExistsException e) {
             System.out.println( ErrorMsg.USER_NOT_EXISTS.getMsg() );
         }

@@ -457,24 +457,23 @@ public class DoubleList<E> implements List<E>
     public void append( DoubleList<E> list )
     {
         //TOD: Left as an exercise.
-        if(list.isEmpty()){
-            return;
+        if(!list.isEmpty()){
+            if(this.isEmpty()){
+                head = list.head;
+                tail = list.tail;
+            } else {
+                tail.setNext(list.head);
+                list.head.setPrevious(tail);
+                tail = list.tail;
+            }
+
+            currentSize += list.size();
+
+            list.head = null;
+            list.tail = null;
+            list.currentSize = 0;
         }
 
-        if(this.isEmpty()){
-            head = list.head;
-            tail = list.tail;
-        } else {
-            tail.setNext(list.head);
-            list.head.setPrevious(tail);
-            tail = list.tail;
-        }
-
-        currentSize += list.size();
-
-        list.head = null;
-        list.tail = null;
-        list.currentSize = 0;
     }
 
 
