@@ -1,11 +1,33 @@
 addUser alex Alexandre Peres
 21 alex.peres
+
 addUser jjj jjjj jjj
 16 vsvs@vava
+
 addUser alex vdssv vsdvsd
 20 aaaa@aaaa
+
 addUser ttt saaa aaa
 21 ooo@ooo
+
 infoUser alex
 infoUser jjj
 infoUser ttt
+infoArtist alex
+
+addArtist joao joao caca
+joao abc
+30 aa@000.pt
+
+infoArtist joao
+
+removeUser ttt
+infoUser ttt
+removeUser ccc
+
+addWork RF-123 joao 2020 A Lua
+addWork RF-123 joao 2222 aaaa
+addWork RF-222 mifuel 933 tuaa
+addWork RF-222 alex 342 aaaaaaaa
+infoWork RF-123
+infoWork RF-222

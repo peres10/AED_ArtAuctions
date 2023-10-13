@@ -21,15 +21,15 @@ public class ArtAuctionsSystemClass implements  ArtAuctionsSystem{
     /**
      * List containing every User in the system
      */
-    List<User> users;
+    private List<User> users;
     /**
      * List containing every Auction in the system
      */
-    List<Auction> auctions;
+    private List<Auction> auctions;
     /**
      * List containing every Work in the system
      */
-    List<Work> works;
+    private List<Work> works;
 
 
     /**
@@ -42,94 +42,200 @@ public class ArtAuctionsSystemClass implements  ArtAuctionsSystem{
     }
 
     @Override
-    public void addUser( String login, String name, int age, String email ) throws UnderageUserException, UserAlreadyExistsException {
-        if( age < 18 ) throw new UnderageUserException();
-        if( searchUser(login) != null ) throw new UserAlreadyExistsException();
+    public void addUser( String login, String name, int age, String email )
+            throws UnderageUserException, UserAlreadyExistsException {
+        if( age < 18 )
+            throw new UnderageUserException();
 
-        users.addLast( new RegularUserClass( login, name, age, email));
+        if( searchUser(login) != null )
+            throw new UserAlreadyExistsException();
+
+        users.addLast( new RegularUserClass( login, name, age, email ));
     }
 
     @Override
-    public void addArtist() throws UnderageUserException, UserAlreadyExistsException {
+    public void addArtist( String login, String name, int age, String email, String artisticName )
+            throws UnderageUserException, UserAlreadyExistsException {
+        if( age < 18 )
+            throw new UnderageUserException();
 
+        if( searchUser(login) != null )
+            throw new UserAlreadyExistsException();
+
+        users.addLast( new ArtistClass( login, name, age, email, artisticName ));
     }
 
     @Override
-    public void removeUser() throws UserNotExistsException {
+    public void removeUser( String login )
+            throws UserNotExistsException, UserHasActiveBidsException, UserHasWorksAuctionedException {
+        User user = searchUser(login);
 
+        if ( user == null )
+            throw new UserNotExistsException();
+
+        if ( user.getNumOfActiveBids() > 0 )
+            throw new UserHasActiveBidsException();
+
+        if ( user instanceof Artist && ((Artist)user).getNumberOfAuctionWorks() > 0)
+            throw new UserHasWorksAuctionedException();
+
+        Artist artist = (Artist)user;
+
+        removeAllWorksFromAnArtist( artist );
+        users.remove( user );
     }
 
     @Override
-    public void addWork() throws WorkAlreadyExistsException, UserNotExistsException, ArtistNotExistsException {
+    public void addWork( String idWork, String loginCreator, int year, String name )
+            throws WorkAlreadyExistsException, UserNotExistsException, ArtistNotExistsException {
+        if( searchWork(idWork) != null)
+            throw new WorkAlreadyExistsException();
 
+        User userCreator = searchUser( loginCreator );
+        if ( userCreator == null)
+            throw new UserNotExistsException();
+
+        if ( !(userCreator instanceof Artist) )
+            throw new ArtistNotExistsException();
+
+        ArtistPrivate artist = (ArtistPrivate) userCreator;
+
+        Work newWork =  new WorkClass( idWork, artist, year, name );
+
+        artist.addWork( newWork );
+        works.addLast( newWork );
     }
 
     @Override
-    public RegularUser infoUser( String login ) throws UserNotExistsException {
+    public RegularUser infoUser( String login )
+            throws UserNotExistsException {
         RegularUser user = (RegularUser) searchUser( login );
-        if( user == null ) throw new UserNotExistsException();
+        if( user == null )
+            throw new UserNotExistsException();
 
         return user;
     }
 
     @Override
-    public void infoArtist() throws UserNotExistsException, ArtistNotExistsException {
+    public Artist infoArtist( String login )
+            throws UserNotExistsException, ArtistNotExistsException {
+        User user = searchUser( login );
+        if( user == null )
+            throw new UserNotExistsException();
+
+        if( !(user  instanceof Artist) )
+            throw new ArtistNotExistsException();
+
+        Artist artist = (Artist)user;
+
+        return artist;
+    }
+
+
+    @Override
+    public Work infoWork( String idWork )
+            throws WorkNotExistsException {
+        Work work = searchWork(idWork);
+        if( work == null )
+            throw new WorkNotExistsException();
+
+        return work;
+    }
+
+    @Override
+    public void createAuction()
+            throws AuctionAlreadyExistsException {
 
     }
 
     @Override
-    public void infoWork() throws WorkNotExistsException {
+    public void addWorkAuction()
+            throws AuctionNotExistsException, WorkNotExistsException {
 
     }
 
     @Override
-    public void createAuction() throws AuctionAlreadyExistsException {
+    public void bid()
+            throws AuctionNotExistsException, WorkNotExistsException, UserNotExistsException {
 
     }
 
     @Override
-    public void addWorkAuction() throws AuctionNotExistsException, WorkNotExistsException {
+    public void closeAuction()
+            throws AuctionNotExistsException {
 
     }
 
     @Override
-    public void bid() throws AuctionNotExistsException, WorkNotExistsException, UserNotExistsException {
+    public void listAuctionWorks()
+            throws AuctionNotExistsException, AuctionEmptyException {
 
     }
 
     @Override
-    public void closeAuction() throws AuctionNotExistsException {
+    public void listArtistWorks()
+            throws UserNotExistsException, ArtistNotExistsException, ArtistWithoutWorksException {
 
     }
 
     @Override
-    public void listAuctionWorks() throws AuctionNotExistsException, AuctionEmptyException {
+    public void listBidsWork()
+            throws AuctionNotExistsException, WorkNotInAuctionException, WorkWithoutBidsException {
 
     }
 
     @Override
-    public void listArtistWorks() throws UserNotExistsException, ArtistNotExistsException, ArtistWithoutWorksException {
-
-    }
-
-    @Override
-    public void listBidsWork() throws AuctionNotExistsException, WorkNotInAuctionException, WorkWithoutBidsException {
-
-    }
-
-    @Override
-    public void listWorksByValue() throws AuctionWithoutAnySellException {
+    public void listWorksByValue()
+            throws AuctionWithoutAnySellException {
 
     }
 
 
+    /**
+     * Searches for a user in the List of users and returns it if exists
+     *
+     * @param login - login of a User
+     * @return - if a User exists returns it, if not returns null
+     */
     private User searchUser(String login){
         Iterator<User> it = users.iterator();
+        User user;
         while(it.hasNext()){
-            User user = it.next();
+            user = it.next();
             if(user.getLogin().equalsIgnoreCase(login))
                 return user;
         }
         return null;
+    }
+
+    /**
+     * Searches for a work in the List of works and returns it if exists
+     *
+     * @param id - id of Work
+     * @return - if a Work exists returns it, if not returns null
+     */
+    private Work searchWork(String id){
+        Iterator<Work> it = works.iterator();
+        Work work;
+        while(it.hasNext()){
+            work = it.next();
+            if(work.getId().equalsIgnoreCase(id))
+                return work;
+        }
+        return null;
+    }
+
+    /**
+     * Removes all works that were made by a specific user
+     *
+     * @param creator - Artist object, that must be valid, that may have works made by him
+     */
+    private void removeAllWorksFromAnArtist( Artist creator ){
+        Iterator<Work> it = creator.worksIterator();
+        Work work;
+        while(it.hasNext()){
+            work = it.next();
+            works.remove(work);
+        }
     }
 }

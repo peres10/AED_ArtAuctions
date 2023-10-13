@@ -5,7 +5,7 @@ package artauctions;
  *
  * @author Alexandre Peres 61615
  */
-public abstract class AbstractUser implements User {
+public abstract class AbstractUser implements UserPrivate {
 
     /**
      * Serial Version UID of the Class
@@ -28,6 +28,10 @@ public abstract class AbstractUser implements User {
      * User's email
      */
     private final String email;
+    /**
+     * User's number of active bids
+     */
+    private int numOfActiveBids;
 
     /**
      * AbstractUser constructor
@@ -42,6 +46,7 @@ public abstract class AbstractUser implements User {
         this.name = name;
         this.age = age;
         this.email = email;
+        this.numOfActiveBids = 0;
     }
 
     public String getLogin() {
@@ -58,5 +63,17 @@ public abstract class AbstractUser implements User {
 
     public String getEmail() {
         return email;
+    }
+
+    public int getNumOfActiveBids() {
+        return numOfActiveBids;
+    }
+
+    public void bidOnWorkOfArt(){
+        numOfActiveBids++;
+    }
+
+    public void removeBid(){
+        numOfActiveBids--;
     }
 }

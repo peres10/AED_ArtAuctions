@@ -1,6 +1,4 @@
-import artauctions.ArtAuctionsSystem;
-import artauctions.ArtAuctionsSystemClass;
-import artauctions.RegularUser;
+import artauctions.*;
 import artauctions.exceptions.*;
 
 import java.io.*;
@@ -75,7 +73,9 @@ public class Main {
         ARTIST_WITHOUT_WORKS( "Artista sem obras." ),
         WORK_NOT_IN_AUCTION( "Obra inexistente no leilao." ),
         WORK_WITHOUT_BIDS( "Obra sem propostas." ),
-        AUCTION_WITHOUT_ANY_SELL( "Nao existem obras ja vendidas em leilao." )
+        AUCTION_WITHOUT_ANY_SELL( "Nao existem obras ja vendidas em leilao." ),
+        USER_HAS_ACTIVE_BIDS( "Utilizador com propostas submetidas." ),
+        ARTIST_HAS_WORKS_AUCTIONED ( "Artista com obras em leilao." )
         ;
         private final String errorMsg;
 
@@ -226,7 +226,7 @@ public class Main {
         in.nextLine();
 
         try {
-            data.addArtist();
+            data.addArtist( login, name, age, email, artisticName );
             System.out.println( Msg.ADDED_ARTIST.getMsg() );
         } catch (UnderageUserException e) {
             System.out.println( ErrorMsg.UNDERAGE_USER.getMsg() );
@@ -246,10 +246,14 @@ public class Main {
         in.nextLine();
 
         try {
-            data.removeUser();
+            data.removeUser( login );
             System.out.println( Msg.REMOVED_USER.getMsg() );
         } catch (UserNotExistsException e) {
             System.out.println( ErrorMsg.USER_NOT_EXISTS.getMsg() );
+        } catch (UserHasActiveBidsException e) {
+            System.out.println( ErrorMsg.USER_HAS_ACTIVE_BIDS.getMsg() );
+        } catch (UserHasWorksAuctionedException e) {
+            System.out.println( ErrorMsg.ARTIST_HAS_WORKS_AUCTIONED.getMsg() );
         }
     }
 
@@ -261,13 +265,12 @@ public class Main {
      */
     private static void addWork( Scanner in, ArtAuctionsSystem data ){
         String idWork = in.next();
-        String ownerLogin = in.next();
+        String creatorLogin = in.next();
         int year = in.nextInt();
         String name = in.nextLine().trim();
-        in.nextLine();
 
         try {
-            data.addWork();
+            data.addWork(idWork, creatorLogin, year, name);
             System.out.println( Msg.ADDED_WORK.getMsg() );
         } catch (WorkAlreadyExistsException e) {
             System.out.println( ErrorMsg.WORK_ALREADY_EXISTS.getMsg() );
@@ -290,7 +293,8 @@ public class Main {
 
         try{
             RegularUser user = data.infoUser( login );
-            System.out.printf( Msg.USER_INFO.getMsg(), user.getLogin(), user.getName(), user.getAge(), user.getEmail() );
+            System.out.printf( Msg.USER_INFO.getMsg(), user.getLogin(), user.getName(), user.getAge(),
+                    user.getEmail() );
         } catch (UserNotExistsException e) {
             System.out.println( ErrorMsg.USER_NOT_EXISTS.getMsg() );
         }
@@ -307,8 +311,9 @@ public class Main {
         in.nextLine();
 
         try{
-            data.infoArtist();
-            //System.out.printf( Msg.ARTIST_INFO.getMsg(), );
+            Artist user = data.infoArtist( login );
+            System.out.printf( Msg.ARTIST_INFO.getMsg(), user.getLogin(), user.getName(), user.getArtisticName(),
+                    user.getAge(), user.getEmail() );
         } catch (UserNotExistsException e) {
             System.out.println( ErrorMsg.USER_NOT_EXISTS.getMsg() );
         } catch (ArtistNotExistsException e) {
@@ -327,8 +332,9 @@ public class Main {
         in.nextLine();
 
         try{
-            data.infoWork();
-            //System.out.printf( Msg.WORK_INFO.getMsg().getMsg(), );
+            Work work = data.infoWork( idWork );
+            System.out.printf( Msg.WORK_INFO.getMsg(), work.getId(), work.getName(), work.getYear(),
+                    work.getLastSaleValue(), work.getCreatorLogin(), work.getCreatorName() );
         } catch (WorkNotExistsException e) {
             System.out.println( ErrorMsg.WORK_NOT_EXISTS.getMsg() );
         }
@@ -485,7 +491,7 @@ public class Main {
     /**
      * Loads the program from an external file if the file exists
      *
-     * @return
+     * @return data
      */
     private static ArtAuctionsSystem load(){
         ArtAuctionsSystem data;

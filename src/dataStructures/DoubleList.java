@@ -5,6 +5,7 @@ import java.io.Serializable;
 /**
  * Doubly linked list Implementation 
  * @author AED  Team
+ * @author Alexandre Peres 61615
  * @version 1.0
  * @param <E> Generic Element
  * 

@@ -3,10 +3,10 @@ package artauctions.exceptions;
 /**
  * @author Alexandre Peres 61615
  */
-public class WorkNotExistsException extends Exception{
+public class UserHasWorksAuctionedException extends Exception{
 
     static final long serialVersionUID = 0L;
 
-    public WorkNotExistsException(){
+    public UserHasWorksAuctionedException(){
     }
 }

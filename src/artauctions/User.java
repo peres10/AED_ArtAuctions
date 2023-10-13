@@ -34,4 +34,11 @@ public interface User extends Serializable {
      * @return - String with the User's email
      */
     String getEmail();
+
+    /**
+     * Returns the number of active bids a user has
+     *
+     * @return - int with the number of active bids the user has
+     */
+    int getNumOfActiveBids();
 }
