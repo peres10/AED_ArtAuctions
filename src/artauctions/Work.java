@@ -8,7 +8,7 @@ import java.io.Serializable;
 public interface Work extends Serializable {
 
     /**
-     * Returns the id of and art Work
+     * Returns the id of an art Work
      *
      * @return - String with the id
      */

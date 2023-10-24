@@ -138,7 +138,7 @@ public class ArtAuctionsSystemClass implements  ArtAuctionsSystem{
     @Override
     public Work infoWork( String idWork )
             throws WorkNotExistsException {
-        Work work = searchWork(idWork);
+        Work work = searchWork( idWork );
         if( work == null )
             throw new WorkNotExistsException();
 
@@ -146,20 +146,32 @@ public class ArtAuctionsSystemClass implements  ArtAuctionsSystem{
     }
 
     @Override
-    public void createAuction()
+    public void createAuction( String idAuction )
             throws AuctionAlreadyExistsException {
+        Auction auction = searchAuction( idAuction );
+        if( auction != null )
+            throw new AuctionAlreadyExistsException();
 
+        auctions.addLast( new AuctionClass(idAuction) );
     }
 
     @Override
-    public void addWorkAuction()
+    public void addWorkAuction( String idAuction, String idWork, int minValue )
             throws AuctionNotExistsException, WorkNotExistsException {
+        AuctionPrivate auction = (AuctionPrivate)searchAuction( idAuction );
+        if( auction == null)
+            throw new AuctionNotExistsException();
 
+        WorkPrivate work = (WorkPrivate) searchWork( idWork );
+        if( work == null )
+            throw new WorkNotExistsException();
+
+        auction.addWorkAuction(work);
     }
 
     @Override
     public void bid()
-            throws AuctionNotExistsException, WorkNotExistsException, UserNotExistsException {
+            throws AuctionNotExistsException, WorkNotExistsException, UserNotExistsException, BidValueUnderMinValueException {
 
     }
 
@@ -200,7 +212,7 @@ public class ArtAuctionsSystemClass implements  ArtAuctionsSystem{
      * @param login - login of a User
      * @return - if a User exists returns it, if not returns null
      */
-    private User searchUser(String login){
+    private User searchUser( String login ){
         Iterator<User> it = users.iterator();
         User user;
         while(it.hasNext()){
@@ -217,13 +229,24 @@ public class ArtAuctionsSystemClass implements  ArtAuctionsSystem{
      * @param id - id of Work
      * @return - if a Work exists returns it, if not returns null
      */
-    private Work searchWork(String id){
+    private Work searchWork( String id ){
         Iterator<Work> it = works.iterator();
         Work work;
         while(it.hasNext()){
             work = it.next();
             if(work.getId().equalsIgnoreCase(id))
                 return work;
+        }
+        return null;
+    }
+
+    private Auction searchAuction( String id ){
+        Iterator<Auction> it = auctions.iterator();
+        Auction auction;
+        while(it.hasNext()){
+            auction = it.next();
+            if(auction.getId().equalsIgnoreCase(id))
+                return auction;
         }
         return null;
     }

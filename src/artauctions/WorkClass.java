@@ -34,7 +34,7 @@ public class WorkClass implements WorkPrivate{
     /**
      * Work's highest sale value
      */
-    private int highestSalveValue;
+    private int highestSaleValue;
 
 
     /**
@@ -52,7 +52,7 @@ public class WorkClass implements WorkPrivate{
         this.name = name;
         //this.hasBeenSoldOnce = false;
         this.lastSaleValue = 0;
-        this.highestSalveValue = 0;
+        this.highestSaleValue = 0;
     }
 
 
@@ -98,13 +98,19 @@ public class WorkClass implements WorkPrivate{
 
     @Override
     public int getHighestSaleValue() {
-        return highestSalveValue;
+        return highestSaleValue;
     }
 
     @Override
     public void sellArtWork( int value ) {
-        if( value > highestSalveValue)
-            highestSalveValue = value;
+        if( value > highestSaleValue)
+            highestSaleValue = value;
         lastSaleValue = value;
     }
+
+    @Override
+    public void addToAnAuction() {
+        ((ArtistPrivate)creator).auctionWork();
+    }
+
 }

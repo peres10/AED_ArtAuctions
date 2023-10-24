@@ -80,7 +80,7 @@ public interface ArtAuctionsSystem extends Serializable {
      * @throws UserNotExistsException - if there is no user with login
      * @throws ArtistNotExistsException - if there is not artist with login
      */
-    public Artist infoArtist( String login )
+    Artist infoArtist( String login )
             throws UserNotExistsException, ArtistNotExistsException;
 
     /**
@@ -90,17 +90,32 @@ public interface ArtAuctionsSystem extends Serializable {
      * @return - a Work object of the work searched
      * @throws WorkNotExistsException - if there is no work in the system with the id
      */
-    public Work infoWork( String idWork )
+     Work infoWork( String idWork )
             throws WorkNotExistsException;
 
-    void createAuction( )
+    /**
+     * Creates an auction in the system
+     *
+     * @param idAuction - id of that auction
+     * @throws AuctionAlreadyExistsException - if idAuction already exists
+     */
+    void createAuction( String idAuction )
             throws AuctionAlreadyExistsException;
 
-    void addWorkAuction( )
+    /**
+     * Adds a work to an auction
+     *
+     * @param idAuction - id of the auction
+     * @param idWork - id of the work
+     * @param minValue - minimum value of that auction
+     * @throws AuctionNotExistsException
+     * @throws WorkNotExistsException
+     */
+    void addWorkAuction( String idAuction, String idWork, int minValue )
             throws AuctionNotExistsException, WorkNotExistsException;
 
     void bid( )
-            throws AuctionNotExistsException, WorkNotExistsException, UserNotExistsException;
+            throws AuctionNotExistsException, WorkNotExistsException, UserNotExistsException, BidValueUnderMinValueException;
 
     void closeAuction( )
             throws AuctionNotExistsException;

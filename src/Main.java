@@ -75,7 +75,8 @@ public class Main {
         WORK_WITHOUT_BIDS( "Obra sem propostas." ),
         AUCTION_WITHOUT_ANY_SELL( "Nao existem obras ja vendidas em leilao." ),
         USER_HAS_ACTIVE_BIDS( "Utilizador com propostas submetidas." ),
-        ARTIST_HAS_WORKS_AUCTIONED ( "Artista com obras em leilao." )
+        ARTIST_HAS_WORKS_AUCTIONED( "Artista com obras em leilao." ),
+        VALUE_UNDER_MINIMUM_BID( "Valor proposto abaixo do valor minimo." )
         ;
         private final String errorMsg;
 
@@ -354,10 +355,10 @@ public class Main {
         in.nextLine();
 
         try{
-            data.createAuction();
+            data.createAuction( idAuction );
             System.out.println( Msg.AUCTION_CREATED.getMsg() );
         } catch (AuctionAlreadyExistsException e) {
-            System.out.println( ErrorMsg.AUCTION_NOT_EXISTS.getMsg() );
+            System.out.println( ErrorMsg.AUCTION_ALREADY_EXISTS.getMsg() );
         }
     }
 
@@ -374,7 +375,7 @@ public class Main {
        in.nextLine();
 
        try {
-           data.addWorkAuction();
+           data.addWorkAuction( idAuction, idWork, minValue );
            System.out.println( Msg.ADDED_WORK_AUCTION.getMsg() );
        } catch (AuctionNotExistsException e) {
            System.out.println( ErrorMsg.AUCTION_NOT_EXISTS.getMsg() );
@@ -399,12 +400,14 @@ public class Main {
         try{
             data.bid();
             System.out.println( Msg.ACCEPTED_BID.getMsg() );
+        } catch (UserNotExistsException e) {
+            System.out.println( ErrorMsg.USER_NOT_EXISTS.getMsg() );
         } catch (AuctionNotExistsException e) {
             System.out.println( ErrorMsg.AUCTION_NOT_EXISTS.getMsg() );
         } catch (WorkNotExistsException e) {
             System.out.println( ErrorMsg.WORK_NOT_EXISTS.getMsg() );
-        } catch (UserNotExistsException e) {
-            System.out.println( ErrorMsg.USER_NOT_EXISTS.getMsg() );
+        } catch (BidValueUnderMinValueException e) {
+            System.out.println( ErrorMsg.VALUE_UNDER_MINIMUM_BID.getMsg() );
         }
     }
 
@@ -439,6 +442,7 @@ public class Main {
         try{
             data.listAuctionWorks();
             //listar as obras do leila
+            System.out.println("aaa");
         } catch (AuctionNotExistsException e) {
             System.out.println( ErrorMsg.AUCTION_NOT_EXISTS.getMsg() );
         } catch (AuctionEmptyException e) {
