@@ -50,7 +50,6 @@ public class WorkClass implements WorkPrivate{
         this.creator = creator;
         this.year = year;
         this.name = name;
-        //this.hasBeenSoldOnce = false;
         this.lastSaleValue = 0;
         this.highestSaleValue = 0;
     }
@@ -85,11 +84,6 @@ public class WorkClass implements WorkPrivate{
     public String getName() {
         return name;
     }
-
-    /*@Override
-    public boolean getIfHasBeenSoldOnce() {
-        return hasBeenSoldOnce;
-    }*/
 
     @Override
     public int getLastSaleValue() {

@@ -30,8 +30,10 @@ public class ArtAuctionsSystemClass implements  ArtAuctionsSystem{
      * List containing every Work in the system
      */
     private List<Work> works;
-
-
+    /**
+     * Minimum age for a user to be registered
+     */
+    private static final int MINIMUM_AGE = 18;
     /**
      * ArtAuctionsSystemClass constructor
      */
@@ -44,7 +46,7 @@ public class ArtAuctionsSystemClass implements  ArtAuctionsSystem{
     @Override
     public void addUser( String login, String name, int age, String email )
             throws UnderageUserException, UserAlreadyExistsException {
-        if( age < 18 )
+        if( age < MINIMUM_AGE )
             throw new UnderageUserException();
 
         if( searchUser(login) != null )
@@ -56,7 +58,7 @@ public class ArtAuctionsSystemClass implements  ArtAuctionsSystem{
     @Override
     public void addArtist( String login, String name, int age, String email, String artisticName )
             throws UnderageUserException, UserAlreadyExistsException {
-        if( age < 18 )
+        if( age < MINIMUM_AGE )
             throw new UnderageUserException();
 
         if( searchUser(login) != null )
@@ -102,7 +104,7 @@ public class ArtAuctionsSystemClass implements  ArtAuctionsSystem{
 
         ArtistPrivate artist = (ArtistPrivate) userCreator;
 
-        Work newWork =  new WorkClass( idWork, artist, year, name );
+        Work newWork = new WorkClass( idWork, artist, year, name );
 
         artist.addWork( newWork );
         works.addLast( newWork );
@@ -166,7 +168,7 @@ public class ArtAuctionsSystemClass implements  ArtAuctionsSystem{
         if( work == null )
             throw new WorkNotExistsException();
 
-        auction.addWorkAuction(work);
+        auction.addWorkAuction( work, minValue );
     }
 
     @Override
@@ -182,9 +184,16 @@ public class ArtAuctionsSystemClass implements  ArtAuctionsSystem{
     }
 
     @Override
-    public void listAuctionWorks()
+    public Iterator<WorkInAuction> listAuctionWorks( String idAuction )
             throws AuctionNotExistsException, AuctionEmptyException {
+        Auction auction = searchAuction( idAuction );
+        if( auction == null )
+            throw new AuctionNotExistsException();
 
+        if( auction.emptyAuction() )
+            throw new AuctionEmptyException();
+
+        return auction.worksInAuctionIterator();
     }
 
     @Override

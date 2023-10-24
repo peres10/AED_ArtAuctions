@@ -11,6 +11,7 @@ public interface AuctionPrivate extends Auction, Serializable {
      * Adds an artwork to the list of artworks in the auction
      *
      * @param work - Work to be added
+     * @param minValue - minimum value for the auction
      */
-    void addWorkAuction( WorkPrivate work );
+    void addWorkAuction( WorkPrivate work, int minValue );
 }

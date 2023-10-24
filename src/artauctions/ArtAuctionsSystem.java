@@ -1,6 +1,8 @@
 package artauctions;
 
 import artauctions.exceptions.*;
+import dataStructures.Iterator;
+
 import java.io.Serializable;
 
 /**
@@ -120,7 +122,15 @@ public interface ArtAuctionsSystem extends Serializable {
     void closeAuction( )
             throws AuctionNotExistsException;
 
-    void listAuctionWorks( )
+    /**
+     * Returns an iterator of all WorkInAuction of a specific Auction
+     *
+     * @param idAuction - ID of the auction
+     * @return - Iterator of WorkInAuction with all WorkInAuction of a specific Auction
+     * @throws AuctionNotExistsException - if there is no Auction with idAuction
+     * @throws AuctionEmptyException - if the auction has no Works in it
+     */
+    Iterator<WorkInAuction> listAuctionWorks( String idAuction )
             throws AuctionNotExistsException, AuctionEmptyException;
 
     void listArtistWorks( )

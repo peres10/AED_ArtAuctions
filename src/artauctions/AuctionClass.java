@@ -21,7 +21,7 @@ public class AuctionClass implements AuctionPrivate{
     /**
      * List of works in the auction
      */
-    private List<Work> worksInAuction;
+    private List<WorkInAuction> worksInAuction;
 
     /**
      * AuctionClass constructor
@@ -39,19 +39,35 @@ public class AuctionClass implements AuctionPrivate{
     }
 
     @Override
-    public void addWorkAuction( WorkPrivate work ) {
+    public boolean emptyAuction() {
+        return worksInAuction.isEmpty();
+    }
+
+    @Override
+    public Iterator<WorkInAuction> worksInAuctionIterator() {
+        return worksInAuction.iterator();
+    }
+
+    @Override
+    public void addWorkAuction( WorkPrivate work, int minValue ) {
         if(!findIfWorkAlreadyInAuction(work)) {
-            worksInAuction.addLast(work);
-            work.addToAnAuction();
+            worksInAuction.addLast(new WorkInAuctionClass(work, minValue));
         }
     }
 
-    private boolean findIfWorkAlreadyInAuction( Work work ) {
-        Iterator<Work> it = worksInAuction.iterator();
-        Work workIt;
-        while (it.hasNext()){
-            workIt = it.next();
-            if(workIt.getId().equalsIgnoreCase(work.getId()))
+
+    /**
+     * Find if a work is already auctioned
+     *
+     * @param work - the work to be searched
+     * @return - true if it is, false if not
+     */
+    private boolean findIfWorkAlreadyInAuction( Work work ){
+        Iterator<WorkInAuction> it = worksInAuction.iterator();
+        WorkInAuction worksInAuctionIt;
+        while(it.hasNext()){
+            worksInAuctionIt = it.next();
+            if(worksInAuctionIt.getWork().getId().equalsIgnoreCase(work.getId()))
                 return true;
         }
         return false;

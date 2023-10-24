@@ -20,5 +20,5 @@ public interface ArtistPrivate extends Artist {
      *
      * @param work - work that is made by the artist
      */
-    void addWork(Work work);
+    void addWork( Work work );
 }

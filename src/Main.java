@@ -1,5 +1,6 @@
 import artauctions.*;
 import artauctions.exceptions.*;
+import dataStructures.Iterator;
 
 import java.io.*;
 import java.util.Scanner;
@@ -423,6 +424,7 @@ public class Main {
 
         try{
             data.closeAuction();
+            System.out.println("aaa");
             //listar as obras vendidas e nao vendidas
         } catch (AuctionNotExistsException e) {
             System.out.println( ErrorMsg.AUCTION_NOT_EXISTS.getMsg() );
@@ -440,13 +442,20 @@ public class Main {
         in.nextLine();
 
         try{
-            data.listAuctionWorks();
-            //listar as obras do leila
-            System.out.println("aaa");
+            Iterator<WorkInAuction> it = data.listAuctionWorks( idAuction );
+            WorkInAuction workInAuction;
+            Work work;
+            while(it.hasNext()){
+                workInAuction = it.next();
+                work = workInAuction.getWork();
+                System.out.printf(Msg.LIST_WORKS_AUCTION.getMsg(),
+                        work.getId(), work.getName(), work.getYear(), work.getHighestSaleValue(),
+                        work.getCreatorLogin(), work.getCreatorName());
+            }
         } catch (AuctionNotExistsException e) {
             System.out.println( ErrorMsg.AUCTION_NOT_EXISTS.getMsg() );
         } catch (AuctionEmptyException e) {
-            System.out.println( ErrorMsg.AUCTION_WITHOUT_ANY_SELL.getMsg() );
+            System.out.println( ErrorMsg.AUCTION_EMPTY.getMsg() );
         }
     }
 
