@@ -109,6 +109,7 @@ public class Main {
 
         while( com != Command.QUIT ){
             com = getCommand( in );
+            System.out.println();
             switch ( com ){
                 case ADDUSER :
                     addUser( in, data );
@@ -155,12 +156,15 @@ public class Main {
                 case LISTWORKSBYVALUE :
                     listWorksByValue( data );
                     break;
+                case QUIT:
+                    quitProgram( data );
+                    return;
                 default :
                     break;
             }
             System.out.println();
         }
-        quitProgram(data);
+        //quitProgram(data);
     }
 
     /**
@@ -184,7 +188,6 @@ public class Main {
      */
     private static void quitProgram(ArtAuctionsSystem data){
         System.out.println(Msg.QUIT.getMsg());
-        System.out.println();
         save(data);
     }
 
@@ -292,7 +295,7 @@ public class Main {
         in.nextLine();
 
         try{
-            RegularUser user = data.infoUser( login );
+            User user = data.infoUser( login );
             System.out.printf( Msg.USER_INFO.getMsg(), user.getLogin(), user.getName(), user.getAge(),
                     user.getEmail() );
         } catch (UserNotExistsException e) {

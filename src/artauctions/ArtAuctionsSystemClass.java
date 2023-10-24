@@ -50,7 +50,7 @@ public class ArtAuctionsSystemClass implements  ArtAuctionsSystem{
         if( searchUser(login) != null )
             throw new UserAlreadyExistsException();
 
-        users.addLast( new RegularUserClass( login, name, age, email ));
+        users.addLast( new UserClass( login, name, age, email ));
     }
 
     @Override
@@ -79,9 +79,11 @@ public class ArtAuctionsSystemClass implements  ArtAuctionsSystem{
         if ( user instanceof Artist && ((Artist)user).getNumberOfAuctionWorks() > 0)
             throw new UserHasWorksAuctionedException();
 
-        Artist artist = (Artist)user;
+        if (user instanceof Artist) {
+            Artist artist = (Artist) user;
+            removeAllWorksFromAnArtist( artist );
+        }
 
-        removeAllWorksFromAnArtist( artist );
         users.remove( user );
     }
 
@@ -107,9 +109,10 @@ public class ArtAuctionsSystemClass implements  ArtAuctionsSystem{
     }
 
     @Override
-    public RegularUser infoUser( String login )
+    public User infoUser( String login )
             throws UserNotExistsException {
-        RegularUser user = (RegularUser) searchUser( login );
+        User user = searchUser( login );
+
         if( user == null )
             throw new UserNotExistsException();
 

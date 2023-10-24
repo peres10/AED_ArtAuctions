@@ -5,7 +5,7 @@ package artauctions;
  *
  * @author Alexandre Peres 61615
  */
-public abstract class AbstractUser implements UserPrivate {
+public class UserClass implements UserPrivate {
 
     /**
      * Serial Version UID of the Class
@@ -41,7 +41,7 @@ public abstract class AbstractUser implements UserPrivate {
      * @param age - User's age
      * @param email - User's email
      */
-    protected AbstractUser( String login, String name, int age, String email){
+    public UserClass(String login, String name, int age, String email){
         this.login = login;
         this.name = name;
         this.age = age;

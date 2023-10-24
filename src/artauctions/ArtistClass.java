@@ -7,7 +7,7 @@ import dataStructures.List;
 /**
  * @author Alexandre Peres 61615
  */
-public class ArtistClass extends AbstractUser implements ArtistPrivate {
+public class ArtistClass extends UserClass implements ArtistPrivate {
 
     /**
      * Serial Version UID of the class

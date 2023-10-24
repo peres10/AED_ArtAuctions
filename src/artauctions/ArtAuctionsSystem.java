@@ -11,7 +11,7 @@ import java.io.Serializable;
 public interface ArtAuctionsSystem extends Serializable {
 
     /**
-     * Adds a RegularUser to the system
+     * Adds a regular User to the system
      *
      * @param login - user login
      * @param name - user login
@@ -66,10 +66,10 @@ public interface ArtAuctionsSystem extends Serializable {
      * Gets the information of a User in the system
      *
      * @param login - login of a user
-     * @return - a RegularUser object of the user searched
+     * @return - a User object of the user searched
      * @throws UserNotExistsException - if there is no user with login
      */
-    RegularUser infoUser( String login )
+    User infoUser( String login )
             throws UserNotExistsException;
 
     /**
