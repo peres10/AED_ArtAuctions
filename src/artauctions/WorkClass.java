@@ -107,4 +107,9 @@ public class WorkClass implements WorkPrivate{
         ((ArtistPrivate)creator).auctionWork();
     }
 
+    @Override
+    public void removeFromAnAuction() {
+        ((ArtistPrivate)creator).closeAuctionWork();
+    }
+
 }

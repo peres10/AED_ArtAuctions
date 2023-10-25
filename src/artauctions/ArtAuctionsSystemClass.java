@@ -178,9 +178,13 @@ public class ArtAuctionsSystemClass implements  ArtAuctionsSystem{
     }
 
     @Override
-    public void closeAuction()
+    public Iterator<WorkInAuction> closeAuction( String idAuction )
             throws AuctionNotExistsException {
+        Auction auction = searchAuction( idAuction );
+        if( auction == null )
+            throw new AuctionNotExistsException();
 
+        return auction.closeAuction();
     }
 
     @Override

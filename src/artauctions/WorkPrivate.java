@@ -16,7 +16,12 @@ public interface WorkPrivate extends Work, Serializable {
     void sellArtWork( int value );
 
     /**
-     * Increases the creator of this art work number of works in auction
+     * Increases the creator's of this art work number of works in auction
      */
     void addToAnAuction();
+
+    /**
+     * Decreases the creator's of this art work number of works in auction
+     */
+    void removeFromAnAuction();
 }

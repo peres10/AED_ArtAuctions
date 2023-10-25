@@ -48,6 +48,7 @@ public class AuctionClass implements AuctionPrivate{
         return worksInAuction.iterator();
     }
 
+
     @Override
     public void addWorkAuction( WorkPrivate work, int minValue ) {
         if(!findIfWorkAlreadyInAuction(work)) {
@@ -55,6 +56,11 @@ public class AuctionClass implements AuctionPrivate{
         }
     }
 
+    @Override
+    public Iterator<WorkInAuction> closeAuction() {
+        endEachWorkInAuction();
+        return worksInAuction.iterator();
+    }
 
     /**
      * Find if a work is already auctioned
@@ -64,13 +70,21 @@ public class AuctionClass implements AuctionPrivate{
      */
     private boolean findIfWorkAlreadyInAuction( Work work ){
         Iterator<WorkInAuction> it = worksInAuction.iterator();
-        WorkInAuction worksInAuctionIt;
+        WorkInAuction workInAuctionObj;
         while(it.hasNext()){
-            worksInAuctionIt = it.next();
-            if(worksInAuctionIt.getWork().getId().equalsIgnoreCase(work.getId()))
+            workInAuctionObj = it.next();
+            if(workInAuctionObj.getWork().getId().equalsIgnoreCase(work.getId()))
                 return true;
         }
         return false;
     }
 
+    private void endEachWorkInAuction(){
+        Iterator<WorkInAuction> it = worksInAuction.iterator();
+        WorkInAuction workInAuctionObj;
+        while(it.hasNext()){
+            workInAuctionObj = it.next();
+            ((WorkInAuctionPrivate)workInAuctionObj).endAuction();
+        }
+    }
 }

@@ -13,4 +13,11 @@ public interface WorkInAuction extends Serializable {
      * @return - Work object of an  art work
      */
     Work getWork();
+
+    /**
+     * Returns a boolean telling if a work was sold or not
+     *
+     * @return - true if it was, false if not
+     */
+    boolean getIfWasSold();
 }

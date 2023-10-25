@@ -423,9 +423,20 @@ public class Main {
         in.nextLine();
 
         try{
-            data.closeAuction();
-            System.out.println("aaa");
-            //listar as obras vendidas e nao vendidas
+            Iterator<WorkInAuction> it = data.closeAuction( idAuction );
+            WorkInAuction workInAuction;
+            Work work;
+
+            System.out.println(Msg.CLOSED_AUCTION.getMsg());
+            while(it.hasNext()){
+                workInAuction = it.next();
+                work = workInAuction.getWork();
+                if(workInAuction.getIfWasSold())
+                    System.out.printf("aaa\n");
+                else
+                    System.out.printf(Msg.REMAIN_WORK_AUCTION.getMsg()
+                            ,work.getId(), work.getName() );
+            }
         } catch (AuctionNotExistsException e) {
             System.out.println( ErrorMsg.AUCTION_NOT_EXISTS.getMsg() );
         }
@@ -445,12 +456,13 @@ public class Main {
             Iterator<WorkInAuction> it = data.listAuctionWorks( idAuction );
             WorkInAuction workInAuction;
             Work work;
+
             while(it.hasNext()){
                 workInAuction = it.next();
                 work = workInAuction.getWork();
                 System.out.printf(Msg.LIST_WORKS_AUCTION.getMsg(),
                         work.getId(), work.getName(), work.getYear(), work.getHighestSaleValue(),
-                        work.getCreatorLogin(), work.getCreatorName());
+                        work.getCreatorLogin(), work.getCreatorName() );
             }
         } catch (AuctionNotExistsException e) {
             System.out.println( ErrorMsg.AUCTION_NOT_EXISTS.getMsg() );

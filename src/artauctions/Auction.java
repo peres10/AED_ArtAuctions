@@ -29,4 +29,12 @@ public interface Auction extends Serializable {
      * @return - iterator of WorkInAuctoion's
      */
     Iterator<WorkInAuction> worksInAuctionIterator();
+
+    /**
+     * Closes an auction and returns an iterator of all the works in the auction
+     *
+     * @return - iterator of all the works in the auction
+     */
+    Iterator<WorkInAuction> closeAuction();
+
 }

@@ -1,5 +1,7 @@
 package artauctions;
 
+import dataStructures.Iterator;
+
 import java.io.Serializable;
 
 /**
@@ -14,4 +16,6 @@ public interface AuctionPrivate extends Auction, Serializable {
      * @param minValue - minimum value for the auction
      */
     void addWorkAuction( WorkPrivate work, int minValue );
+
+    Iterator<WorkInAuction> closeAuction();
 }
