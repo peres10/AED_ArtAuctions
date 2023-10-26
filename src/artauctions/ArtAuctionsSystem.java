@@ -116,8 +116,8 @@ public interface ArtAuctionsSystem extends Serializable {
     void addWorkAuction( String idAuction, String idWork, int minValue )
             throws AuctionNotExistsException, WorkNotExistsException;
 
-    void bid( )
-            throws AuctionNotExistsException, WorkNotExistsException, UserNotExistsException, BidValueUnderMinValueException;
+    void bid(  String idAuction, String idWork, String login, int value  )
+            throws AuctionNotExistsException, WorkNotInAuctionException, UserNotExistsException, BidValueUnderMinValueException;
 
     /**
      * Closes an auction and returns an iterator of all the works in the auction
@@ -126,7 +126,7 @@ public interface ArtAuctionsSystem extends Serializable {
      * @return - iterator of all the works in the auction
      * @throws AuctionNotExistsException - if idAuction does not exist
      */
-    public Iterator<WorkInAuction> closeAuction( String idAuction )
+    Iterator<WorkInAuction> closeAuction( String idAuction )
             throws AuctionNotExistsException;
 
     /**
@@ -143,7 +143,8 @@ public interface ArtAuctionsSystem extends Serializable {
     void listArtistWorks( )
             throws UserNotExistsException, ArtistNotExistsException, ArtistWithoutWorksException;
 
-    void listBidsWork( )
+
+    public Iterator<Bid> listBidsWork( String idAuction, String idWork )
             throws AuctionNotExistsException, WorkNotInAuctionException, WorkWithoutBidsException;
 
     void listWorksByValue( )

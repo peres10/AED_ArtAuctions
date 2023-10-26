@@ -1,5 +1,8 @@
 package artauctions;
 
+import artauctions.exceptions.WorkWithoutBidsException;
+import dataStructures.Iterator;
+
 import java.io.Serializable;
 
 /**
@@ -20,4 +23,21 @@ public interface WorkInAuction extends Serializable {
      * @return - true if it was, false if not
      */
     boolean getIfWasSold();
+
+    /**
+     * Returns the minimum value of a bid for a art work
+     * in this auction
+     *
+     * @return - int with the minimum value
+     */
+    int getMinValue();
+
+
+    Iterator<Bid> getBids() throws WorkWithoutBidsException;
+
+    String getLoginBuyer();
+
+    String getNameBuyer();
+
+    int getSaleValue();
 }

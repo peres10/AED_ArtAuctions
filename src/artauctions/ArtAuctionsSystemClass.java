@@ -172,9 +172,22 @@ public class ArtAuctionsSystemClass implements  ArtAuctionsSystem{
     }
 
     @Override
-    public void bid()
-            throws AuctionNotExistsException, WorkNotExistsException, UserNotExistsException, BidValueUnderMinValueException {
+    public void bid( String idAuction, String idWork, String login, int value )
+            throws AuctionNotExistsException, WorkNotInAuctionException, UserNotExistsException, BidValueUnderMinValueException {
+        User user = searchUser( login );
+        if( user == null )
+            throw new UserNotExistsException();
 
+        Auction auction = searchAuction( idAuction );
+        if( auction == null )
+            throw new AuctionNotExistsException();
+
+        Work work = searchWork( idWork );
+        if( work == null )
+            throw new WorkNotInAuctionException();
+
+        //WorkNotInAuctionException e BidValueUnderMinValueException thrown a por outras funções
+        ((AuctionPrivate)auction).bid( work, user, value );
     }
 
     @Override
@@ -207,8 +220,17 @@ public class ArtAuctionsSystemClass implements  ArtAuctionsSystem{
     }
 
     @Override
-    public void listBidsWork()
+    public Iterator<Bid> listBidsWork( String idAuction, String idWork )
             throws AuctionNotExistsException, WorkNotInAuctionException, WorkWithoutBidsException {
+        Auction auction = searchAuction( idAuction );
+        if( auction == null )
+            throw new AuctionNotExistsException();
+
+        Work work = searchWork( idWork );
+        if( work == null )
+            throw new WorkNotInAuctionException();
+
+        return auction.listBidsWork( work );
 
     }
 

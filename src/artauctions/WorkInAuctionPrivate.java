@@ -1,5 +1,7 @@
 package artauctions;
 
+import artauctions.exceptions.BidValueUnderMinValueException;
+
 import java.io.Serializable;
 
 /**
@@ -12,4 +14,15 @@ public interface WorkInAuctionPrivate extends WorkInAuction, Serializable {
      * to determine the sale value or if it was not sold
      */
     void endAuction();
+
+
+    /**
+     * Bids in the work of art
+     *
+     * @param user - user who is bidding
+     * @param value - value the user will bid
+     * @throws BidValueUnderMinValueException - if value < minValue
+     */
+    void bid( User user, int value ) throws BidValueUnderMinValueException;
+
 }

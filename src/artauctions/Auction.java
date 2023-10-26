@@ -1,5 +1,7 @@
 package artauctions;
 
+import artauctions.exceptions.WorkNotInAuctionException;
+import artauctions.exceptions.WorkWithoutBidsException;
 import dataStructures.Iterator;
 
 import java.io.Serializable;
@@ -36,5 +38,9 @@ public interface Auction extends Serializable {
      * @return - iterator of all the works in the auction
      */
     Iterator<WorkInAuction> closeAuction();
+
+
+    Iterator<Bid> listBidsWork( Work work )
+            throws WorkNotInAuctionException, WorkWithoutBidsException;
 
 }

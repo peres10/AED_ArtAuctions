@@ -399,14 +399,14 @@ public class Main {
         in.nextLine();
 
         try{
-            data.bid();
+            data.bid( idAuction, idWork, login, value );
             System.out.println( Msg.ACCEPTED_BID.getMsg() );
         } catch (UserNotExistsException e) {
             System.out.println( ErrorMsg.USER_NOT_EXISTS.getMsg() );
         } catch (AuctionNotExistsException e) {
             System.out.println( ErrorMsg.AUCTION_NOT_EXISTS.getMsg() );
-        } catch (WorkNotExistsException e) {
-            System.out.println( ErrorMsg.WORK_NOT_EXISTS.getMsg() );
+        } catch (WorkNotInAuctionException e) {
+            System.out.println( ErrorMsg.WORK_NOT_IN_AUCTION.getMsg() );
         } catch (BidValueUnderMinValueException e) {
             System.out.println( ErrorMsg.VALUE_UNDER_MINIMUM_BID.getMsg() );
         }
@@ -432,7 +432,10 @@ public class Main {
                 workInAuction = it.next();
                 work = workInAuction.getWork();
                 if(workInAuction.getIfWasSold())
-                    System.out.printf("aaa\n");
+                    System.out.printf(Msg.SOLD_WORK_AUCTION.getMsg(),
+                            work.getId(), work.getName(),
+                            workInAuction.getLoginBuyer(), workInAuction.getNameBuyer(),
+                            workInAuction.getSaleValue());
                 else
                     System.out.printf(Msg.REMAIN_WORK_AUCTION.getMsg()
                             ,work.getId(), work.getName() );
@@ -495,8 +498,12 @@ public class Main {
         String idWork = in.next();
 
         try{
-            data.listBidsWork();
-            //listar bids do leila
+            Iterator<Bid> it = data.listBidsWork( idAuction, idWork );
+            Bid bid;
+            while (it.hasNext()){
+                bid = it.next();
+                System.out.printf( Msg.LIST_BIDS.getMsg() , bid.userLogin(), bid.userName(), bid.getValue());
+            }
         } catch (AuctionNotExistsException e) {
             System.out.println( ErrorMsg.AUCTION_NOT_EXISTS.getMsg() );
         }catch (WorkNotInAuctionException e) {

@@ -1,5 +1,8 @@
 package artauctions;
 
+import artauctions.exceptions.BidValueUnderMinValueException;
+import artauctions.exceptions.WorkNotInAuctionException;
+import artauctions.exceptions.WorkWithoutBidsException;
 import dataStructures.DoubleList;
 import dataStructures.Iterator;
 import dataStructures.List;
@@ -51,7 +54,7 @@ public class AuctionClass implements AuctionPrivate{
 
     @Override
     public void addWorkAuction( WorkPrivate work, int minValue ) {
-        if(!findIfWorkAlreadyInAuction(work)) {
+        if(findWork(work) == null) {
             worksInAuction.addLast(new WorkInAuctionClass(work, minValue));
         }
     }
@@ -62,23 +65,44 @@ public class AuctionClass implements AuctionPrivate{
         return worksInAuction.iterator();
     }
 
+    @Override
+    public Iterator<Bid> listBidsWork(Work work) throws WorkNotInAuctionException, WorkWithoutBidsException {
+        WorkInAuction workInAuction = findWork( work );
+        if( workInAuction == null)
+            throw new WorkNotInAuctionException();
+
+        return workInAuction.getBids();
+    }
+
+    @Override
+    public void bid(Work work, User user, int value) throws WorkNotInAuctionException, BidValueUnderMinValueException {
+        WorkInAuctionPrivate workInAuction = (WorkInAuctionPrivate) findWork( work );
+        if( workInAuction == null)
+            throw new WorkNotInAuctionException();
+
+        workInAuction.bid( user, value );
+    }
+
     /**
      * Find if a work is already auctioned
      *
      * @param work - the work to be searched
      * @return - true if it is, false if not
      */
-    private boolean findIfWorkAlreadyInAuction( Work work ){
+    private WorkInAuction findWork( Work work ){
         Iterator<WorkInAuction> it = worksInAuction.iterator();
         WorkInAuction workInAuctionObj;
         while(it.hasNext()){
             workInAuctionObj = it.next();
             if(workInAuctionObj.getWork().getId().equalsIgnoreCase(work.getId()))
-                return true;
+                return workInAuctionObj;
         }
-        return false;
+        return null;
     }
 
+    /**
+     * Process all works in the end of an auction
+     */
     private void endEachWorkInAuction(){
         Iterator<WorkInAuction> it = worksInAuction.iterator();
         WorkInAuction workInAuctionObj;
