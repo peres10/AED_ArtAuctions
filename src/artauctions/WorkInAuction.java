@@ -32,12 +32,32 @@ public interface WorkInAuction extends Serializable {
      */
     int getMinValue();
 
-
+    /**
+     * Returns an iterator of all Bid's in this auction
+     *
+     * @return - Iterator of all Bid's in this auction
+     * @throws WorkWithoutBidsException - if there is no bids yet
+     */
     Iterator<Bid> getBids() throws WorkWithoutBidsException;
 
+    /**
+     * Returns the login of the winner of the auction
+     *
+     * @return - String with the login
+     */
     String getLoginBuyer();
 
+    /**
+     * Returns the name of the winner of the auction
+     *
+     * @return - String with the name
+     */
     String getNameBuyer();
 
+    /**
+     * Returns the value of the winning bid
+     *
+     * @return - int with the value
+     */
     int getSaleValue();
 }

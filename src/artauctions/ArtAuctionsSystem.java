@@ -116,7 +116,19 @@ public interface ArtAuctionsSystem extends Serializable {
     void addWorkAuction( String idAuction, String idWork, int minValue )
             throws AuctionNotExistsException, WorkNotExistsException;
 
-    void bid(  String idAuction, String idWork, String login, int value  )
+    /**
+     * Bids on an art work in an auction
+     *
+     * @param idAuction - id of the auction
+     * @param idWork - id of the work
+     * @param login - login of the user who is bidding
+     * @param value - value of the bid
+     * @throws AuctionNotExistsException - if idAuction does not exist
+     * @throws WorkNotInAuctionException - if idWork does not exist or does not exist in the auction
+     * @throws UserNotExistsException - if login does not exist
+     * @throws BidValueUnderMinValueException - if value < minValue of the auction of the work
+     */
+    void bid( String idAuction, String idWork, String login, int value )
             throws AuctionNotExistsException, WorkNotInAuctionException, UserNotExistsException, BidValueUnderMinValueException;
 
     /**
@@ -140,13 +152,24 @@ public interface ArtAuctionsSystem extends Serializable {
     Iterator<WorkInAuction> listAuctionWorks( String idAuction )
             throws AuctionNotExistsException, AuctionEmptyException;
 
+    //Phase 2
     void listArtistWorks( )
             throws UserNotExistsException, ArtistNotExistsException, ArtistWithoutWorksException;
 
-
-    public Iterator<Bid> listBidsWork( String idAuction, String idWork )
+    /**
+     * Returns an iterator of all bids on a work in a specific autcion
+     *
+     * @param idAuction - id of the auction
+     * @param idWork - id of the work
+     * @return - Iterator of Bid with all bids on a work in a auction
+     * @throws AuctionNotExistsException - if idAuction does not exist
+     * @throws WorkNotInAuctionException - if idWork does not exist or does not exist in the auction
+     * @throws WorkWithoutBidsException - if the work in the auction has not bids yet
+     */
+    Iterator<Bid> listBidsWork( String idAuction, String idWork )
             throws AuctionNotExistsException, WorkNotInAuctionException, WorkWithoutBidsException;
 
+    //Phase 2
     void listWorksByValue( )
             throws AuctionWithoutAnySellException;
 }

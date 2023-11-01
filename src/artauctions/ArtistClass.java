@@ -12,22 +12,19 @@ public class ArtistClass extends UserClass implements ArtistPrivate {
     /**
      * Serial Version UID of the class
      */
-    static final long serialVersionUID = 0L;
-
+    private static final long serialVersionUID = 0L;
     /**
      * Artist artistic name
      */
     private final String artisticName;
-
     /**
      * Number of auctioned works a artist has
      */
     private int numberOfAuctionWorks;
-
     /**
      * List of works made by the artist
      */
-    private List<Work> works;
+    private final List<Work> works;
 
     /**
      * ArtistClass constructor
@@ -37,7 +34,7 @@ public class ArtistClass extends UserClass implements ArtistPrivate {
      * @param age   - User's age
      * @param email - User's email
      */
-    protected ArtistClass( String login, String name, int age, String email, String artisticName ) {
+    public ArtistClass( String login, String name, int age, String email, String artisticName ) {
         super(login, name, age, email);
         this.artisticName = artisticName;
         this.numberOfAuctionWorks = 0;

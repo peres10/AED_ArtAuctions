@@ -10,8 +10,7 @@ public class UserClass implements UserPrivate {
     /**
      * Serial Version UID of the Class
      */
-    static final long serialVersionUID = 0L;
-
+    private static final long serialVersionUID = 0L;
     /**
      * User's login
      */

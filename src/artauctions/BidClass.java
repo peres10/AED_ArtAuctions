@@ -8,7 +8,7 @@ public class BidClass implements BidPrivate{
     /**
      * Serial Version UID of the class
      */
-    static final long serialVersionUID = 0L;
+    private static final long serialVersionUID = 0L;
     /**
      * User who made the bid
      */
@@ -29,7 +29,6 @@ public class BidClass implements BidPrivate{
         this.value = value;
         addBidToUser();
     }
-
 
     @Override
     public void removeBidFromUser() {

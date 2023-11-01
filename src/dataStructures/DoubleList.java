@@ -194,7 +194,6 @@ public class DoubleList<E> implements List<E>
     @Override
     public E getLast( ) throws EmptyListException
     {
-    	//TOD: Left as an exercise.
         if ( this.isEmpty() )
             throw new EmptyListException();
 
@@ -240,7 +239,6 @@ public class DoubleList<E> implements List<E>
         if (position == currentSize-1)
             return getLast();
 
-        //TOD: Left as an exercise.
         return getNode(position).getElement();
     }
 
@@ -278,7 +276,6 @@ public class DoubleList<E> implements List<E>
     @Override
     public void addLast( E element )
     {
-    	//TOD: Left as an exercise.
         DoubleListNode<E> newNode = new DoubleListNode<E>(element, tail, null);
         if ( this.isEmpty() )
             head = newNode;
@@ -300,7 +297,7 @@ public class DoubleList<E> implements List<E>
         DoubleListNode<E> prevNode = this.getNode(position - 1);
         DoubleListNode<E> nextNode = prevNode.getNext();
         DoubleListNode<E> newNode = new DoubleListNode<E>(element, prevNode, nextNode);
-        //TOD: Left as an exercise.
+
         currentSize++;
         prevNode.setNext(newNode);
         nextNode.setPrevious(newNode);
@@ -340,7 +337,6 @@ public class DoubleList<E> implements List<E>
     @Override
     public E removeFirst( ) throws EmptyListException
     {
-        //TOD: Left as an exercise.
         if( this.isEmpty() )
             throw new EmptyListException();
 
@@ -356,7 +352,6 @@ public class DoubleList<E> implements List<E>
      */
     protected void removeLastNode( )
     {
-    	//TOD: Left as an exercise.
         tail = tail.getPrevious();
         if ( tail == null )
             head = null;
@@ -385,7 +380,6 @@ public class DoubleList<E> implements List<E>
      */
     protected void removeMiddleNode( DoubleListNode<E> node )
     {
-    	//TOD: Left as an exercise.
         DoubleListNode<E> prevNode = node.getPrevious();
         DoubleListNode<E> nextNode = node.getNext();
 
@@ -408,7 +402,6 @@ public class DoubleList<E> implements List<E>
             return this.removeLast();
         else 
         {
-        	//TOD: Left as an exercise.
             DoubleListNode<E> node = getNode(position);
             E element = node.getElement();
             this.removeMiddleNode(node);
@@ -426,7 +419,6 @@ public class DoubleList<E> implements List<E>
      */
     protected DoubleListNode<E> findNode( E element )
     {
-    	//TOD: Left as an exercise.
     	return this.getNode(find(element));
     }
 
@@ -457,7 +449,6 @@ public class DoubleList<E> implements List<E>
      */
     public void append( DoubleList<E> list )
     {
-        //TOD: Left as an exercise.
         if(!list.isEmpty()){
             if(this.isEmpty()){
                 head = list.head;

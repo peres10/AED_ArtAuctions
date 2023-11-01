@@ -14,8 +14,7 @@ public class WorkInAuctionClass implements WorkInAuctionPrivate {
     /**
      * Serial Version UID of the class
      */
-    static final long serialVersionUID = 0L;
-
+    private static final long serialVersionUID = 0L;
     /**
      * Work object
      */
@@ -27,7 +26,7 @@ public class WorkInAuctionClass implements WorkInAuctionPrivate {
     /**
      * List of all bids made for this work in this auction
      */
-    private List<Bid> bids;
+    private final List<Bid> bids;
     /**
      * Highest bid made for this work in this auction
      */
@@ -93,9 +92,10 @@ public class WorkInAuctionClass implements WorkInAuctionPrivate {
     @Override
     public void endAuction() {
         if(highestBid != null) {
-            work.sellArtWork(highestBid.getValue()); //work.sellArtWork(highestBid.getValue())
+            work.sellArtWork( highestBid.getValue() );
             wasSold = true;
         }
+
         work.removeFromAnAuction();
         removeBids();
     }
@@ -126,7 +126,5 @@ public class WorkInAuctionClass implements WorkInAuctionPrivate {
             bid.removeBidFromUser();
         }
     }
-
-
 
 }

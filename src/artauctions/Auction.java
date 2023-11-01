@@ -39,7 +39,14 @@ public interface Auction extends Serializable {
      */
     Iterator<WorkInAuction> closeAuction();
 
-
+    /**
+     * Returns an Iterator of bids on a work
+     *
+     * @param work - Work in the auction
+     * @return - Iterator of bids on a work
+     * @throws WorkNotInAuctionException - if Work is not auctioned in this auction
+     * @throws WorkWithoutBidsException - if Work in this auction has no bids
+     */
     Iterator<Bid> listBidsWork( Work work )
             throws WorkNotInAuctionException, WorkWithoutBidsException;
 

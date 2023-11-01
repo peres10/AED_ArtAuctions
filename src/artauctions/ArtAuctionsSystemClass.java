@@ -12,24 +12,22 @@ import dataStructures.List;
  */
 public class ArtAuctionsSystemClass implements  ArtAuctionsSystem{
 
-
     /**
      * Serial Version UID of the Class
      */
-    static final long serialVersionUID = 0L;
-
+    private static final long serialVersionUID = 0L;
     /**
      * List containing every User in the system
      */
-    private List<User> users;
+    private final List<User> users;
     /**
      * List containing every Auction in the system
      */
-    private List<Auction> auctions;
+    private final List<Auction> auctions;
     /**
      * List containing every Work in the system
      */
-    private List<Work> works;
+    private final List<Work> works;
     /**
      * Minimum age for a user to be registered
      */
@@ -81,8 +79,7 @@ public class ArtAuctionsSystemClass implements  ArtAuctionsSystem{
         if ( user instanceof Artist && ((Artist)user).getNumberOfAuctionWorks() > 0)
             throw new UserHasWorksAuctionedException();
 
-        if (user instanceof Artist) {
-            Artist artist = (Artist) user;
+        if (user instanceof Artist artist) {
             removeAllWorksFromAnArtist( artist );
         }
 
@@ -131,9 +128,7 @@ public class ArtAuctionsSystemClass implements  ArtAuctionsSystem{
         if( !(user  instanceof Artist) )
             throw new ArtistNotExistsException();
 
-        Artist artist = (Artist)user;
-
-        return artist;
+        return (Artist)user;
     }
 
 
@@ -186,7 +181,6 @@ public class ArtAuctionsSystemClass implements  ArtAuctionsSystem{
         if( work == null )
             throw new WorkNotInAuctionException();
 
-        //WorkNotInAuctionException e BidValueUnderMinValueException thrown a por outras funções
         ((AuctionPrivate)auction).bid( work, user, value );
     }
 
@@ -213,6 +207,7 @@ public class ArtAuctionsSystemClass implements  ArtAuctionsSystem{
         return auction.worksInAuctionIterator();
     }
 
+    //Phase 2
     @Override
     public void listArtistWorks()
             throws UserNotExistsException, ArtistNotExistsException, ArtistWithoutWorksException {
@@ -234,6 +229,7 @@ public class ArtAuctionsSystemClass implements  ArtAuctionsSystem{
 
     }
 
+    //Phase 2
     @Override
     public void listWorksByValue()
             throws AuctionWithoutAnySellException {
@@ -275,6 +271,12 @@ public class ArtAuctionsSystemClass implements  ArtAuctionsSystem{
         return null;
     }
 
+    /**
+     * Searches for an auction in the List of auction and returns it if exists
+     *
+     * @param id - id of Auction
+     * @return - if a Auction exists returns it, if not returns null
+     */
     private Auction searchAuction( String id ){
         Iterator<Auction> it = auctions.iterator();
         Auction auction;

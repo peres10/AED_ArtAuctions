@@ -15,8 +15,7 @@ public class AuctionClass implements AuctionPrivate{
     /**
      * Serial Version UID of the class
      */
-    static final long serialVersionUID = 0L;
-
+    private static final long serialVersionUID = 0L;
     /**
      * Auction ID
      */
@@ -24,7 +23,7 @@ public class AuctionClass implements AuctionPrivate{
     /**
      * List of works in the auction
      */
-    private List<WorkInAuction> worksInAuction;
+    private final List<WorkInAuction> worksInAuction;
 
     /**
      * AuctionClass constructor
@@ -50,7 +49,6 @@ public class AuctionClass implements AuctionPrivate{
     public Iterator<WorkInAuction> worksInAuctionIterator() {
         return worksInAuction.iterator();
     }
-
 
     @Override
     public void addWorkAuction( WorkPrivate work, int minValue ) {
@@ -87,7 +85,7 @@ public class AuctionClass implements AuctionPrivate{
      * Find if a work is already auctioned
      *
      * @param work - the work to be searched
-     * @return - true if it is, false if not
+     * @return - if the work is in the auction returns the WorkInAuction object, if not returns null
      */
     private WorkInAuction findWork( Work work ){
         Iterator<WorkInAuction> it = worksInAuction.iterator();
