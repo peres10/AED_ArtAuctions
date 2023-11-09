@@ -1,6 +1,5 @@
 package dataStructures;
 
-import dataStructures.DoubleList.DoubleListNode;
 
 /**
  * Implementation of Two Way Iterator for DLList 
@@ -49,7 +48,7 @@ class DoubleListIterator<E> implements TwoWayIterator<E>
         firstNode = first;
         lastNode = last;
         this.rewind();
-    }      
+    }
 
 
     @Override
