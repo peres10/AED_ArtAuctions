@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class EntryClass<K, V> implements Entry<K, V>, Serializable {
 
-    static final long serialVersionUID = 0L;
+    private static final long serialVersionUID = 0L;
 
     private K key;
     private V value;
@@ -22,6 +22,14 @@ public class EntryClass<K, V> implements Entry<K, V>, Serializable {
     @Override
     public V getValue() {
         return value;
+    }
+
+    protected void setKey(K newKey) {
+        this.key = newKey;
+    }
+
+    protected void setValue(V newValue){
+        this.value = newValue;
     }
 
 }
