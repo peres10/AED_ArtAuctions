@@ -324,6 +324,9 @@ public class BinarySearchTree<K extends Comparable<K>, V>
         return new BSTKeyOrderIterator<K,V>(root);
     }
 
+    public Iterator<Entry<K,V>> breadthFirstIterator(){
+        return new BSTBreadthFirstIterator<>(root);
+    }
 
     private class BSTKeyOrderIterator<K,V> implements Iterator<Entry<K,V>>{
 
@@ -366,7 +369,41 @@ public class BinarySearchTree<K extends Comparable<K>, V>
         }
     }
 
+    private class BSTBreadthFirstIterator<K,V> implements Iterator<Entry<K,V>>{
 
+        private Queue<BSTNode<K,V>> nextNodes;
+
+        private BSTNode<K,V> root;
+
+        protected BSTBreadthFirstIterator(BSTNode<K,V> root){
+            this.root = root;
+            rewind();
+        }
+        @Override
+        public boolean hasNext() {
+            return !nextNodes.isEmpty();
+        }
+
+        @Override
+        public Entry<K, V> next() throws NoSuchElementException {
+            if (!hasNext())
+                throw new NoSuchElementException();
+
+            BSTNode<K,V> node = nextNodes.dequeue();
+            if(node.getLeft() != null)
+                nextNodes.enqueue(node.getLeft());
+            if(node.getRight() != null)
+                nextNodes.enqueue(node.getRight());
+
+            return node.getEntry();
+        }
+
+        @Override
+        public void rewind() {
+            nextNodes = new QueueInArray<>();
+            nextNodes.enqueue(root);
+        }
+    }
 
 
 }
