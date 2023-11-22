@@ -74,7 +74,7 @@ public class Main {
         ARTIST_WITHOUT_WORKS( "Artista sem obras." ),
         WORK_NOT_IN_AUCTION( "Obra inexistente no leilao." ),
         WORK_WITHOUT_BIDS( "Obra sem propostas." ),
-        AUCTION_WITHOUT_ANY_SELL( "Nao existem obras ja vendidas em leilao." ),
+        NO_WORK_HAS_BEEN_ACTIONED( "Nao existem obras ja vendidas em leilao." ),
         USER_HAS_ACTIVE_BIDS( "Utilizador com propostas submetidas." ),
         ARTIST_HAS_WORKS_AUCTIONED( "Artista com obras em leilao." ),
         VALUE_UNDER_MINIMUM_BID( "Valor proposto abaixo do valor minimo." )
@@ -484,7 +484,16 @@ public class Main {
         String login = in.next();
         in.nextLine();
 
-        //placeholder, só para ser feito na segunda fase
+        //TODO
+        try{
+            data.listArtistWorks();
+        } catch (UserNotExistsException e) {
+            System.out.println( ErrorMsg.USER_NOT_EXISTS.getMsg() );
+        } catch (ArtistNotExistsException e) {
+            System.out.println( ErrorMsg.ARTIST_NOT_EXISTS.getMsg() );
+        } catch (ArtistWithoutWorksException e) {
+            System.out.println( ErrorMsg.ARTIST_WITHOUT_WORKS.getMsg() );
+        }
     }
 
     /**
@@ -519,7 +528,12 @@ public class Main {
      * @param data - ArtAuctions data
      */
     private static void listWorksByValue( ArtAuctionsSystem data ){
-        //placeholder, só para ser feito na segunda fase
+        //TODO
+        try{
+            data.listWorksByValue();
+        } catch (NoWorkHasBeenActionedException e) {
+            System.out.println( ErrorMsg.NO_WORK_HAS_BEEN_ACTIONED.getMsg() );
+        }
     }
 
 

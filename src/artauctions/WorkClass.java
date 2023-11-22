@@ -112,4 +112,13 @@ public class WorkClass implements WorkPrivate{
         ((ArtistPrivate)creator).closeAuctionWork();
     }
 
+    @Override
+    public int compareTo(Work o) {
+        if(highestSaleValue > o.getHighestSaleValue())
+            return -1;
+        else if(highestSaleValue < o.getLastSaleValue())
+            return 1;
+        else
+            return name.compareTo(o.getName());
+    }
 }

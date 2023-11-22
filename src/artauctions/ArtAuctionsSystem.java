@@ -171,5 +171,5 @@ public interface ArtAuctionsSystem extends Serializable {
 
     //Phase 2
     void listWorksByValue( )
-            throws AuctionWithoutAnySellException;
+            throws NoWorkHasBeenActionedException;
 }

@@ -321,14 +321,18 @@ public class BinarySearchTree<K extends Comparable<K>, V>
      * @return  key-order iterator of the entries in the dictionary
      */
     public Iterator<Entry<K,V>> iterator( ){
-        return new BSTKeyOrderIterator<K,V>(root);
+        return new BSTKeyOrderIterator<K, V>(root);
     }
 
     public Iterator<Entry<K,V>> breadthFirstIterator(){
         return new BSTBreadthFirstIterator<>(root);
     }
 
-    private class BSTKeyOrderIterator<K,V> implements Iterator<Entry<K,V>>{
+    public Iterator<Entry<K,V>> reverseIterator() {
+        return new BSTKeyOrderInverseIterator<K, V>(root);
+    }
+
+    private static class BSTKeyOrderIterator<K,V> implements Iterator<Entry<K,V>>{
 
         private Stack<BSTNode<K,V>> nextNodes;
 
@@ -369,7 +373,7 @@ public class BinarySearchTree<K extends Comparable<K>, V>
         }
     }
 
-    private class BSTBreadthFirstIterator<K,V> implements Iterator<Entry<K,V>>{
+    private static class BSTBreadthFirstIterator<K,V> implements Iterator<Entry<K,V>>{
 
         private Queue<BSTNode<K,V>> nextNodes;
 
@@ -405,6 +409,46 @@ public class BinarySearchTree<K extends Comparable<K>, V>
         }
     }
 
+    private static class BSTKeyOrderInverseIterator<K,V> implements Iterator<Entry<K,V>>{
+
+        private Stack<BSTNode<K,V>> nextNodes;
+
+        private BSTNode<K,V> root;
+
+        protected BSTKeyOrderInverseIterator(BSTNode<K,V> root){
+            this.root = root;
+            rewind();
+        }
+
+        @Override
+        public boolean hasNext() {
+            return !nextNodes.isEmpty();
+        }
+
+        @Override
+        public Entry<K, V> next() throws NoSuchElementException {
+            if(!hasNext())
+                throw new NoSuchElementException();
+
+            BSTNode<K,V> node = nextNodes.pop();
+            pushRightNodes(node.getLeft());
+
+            return node.getEntry();
+        }
+
+        @Override
+        public void rewind() {
+            nextNodes = new StackInList<>();
+            pushRightNodes(root);
+        }
+
+        private void pushRightNodes(BSTNode<K,V> node){
+            while (node != null){
+                nextNodes.push(node);
+                node=node.getRight();
+            }
+        }
+    }
 
 }
 

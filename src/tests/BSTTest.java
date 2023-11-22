@@ -302,4 +302,34 @@ public class BSTTest {
 		}
 		assertFalse(it.hasNext());
 	}
+
+	@Test
+	public void reverseIterator(){
+		BinarySearchTree<Integer, Integer> bst = new BinarySearchTree<>();
+
+		bst.insert(1,1);
+		bst.insert(2,1);
+		bst.insert(3,1);
+		bst.insert(6,1);
+		bst.insert(7,1);
+		bst.insert(9,1);
+		bst.insert(123,1);
+
+		Iterator<Entry<Integer, Integer>> it = bst.reverseIterator();
+		assertTrue(it.hasNext());
+		assertEquals(it.next().getKey().intValue(), 123);
+		assertTrue(it.hasNext());
+		assertEquals(it.next().getKey().intValue(), 9);
+		assertTrue(it.hasNext());
+		assertEquals(it.next().getKey().intValue(), 7);
+		assertTrue(it.hasNext());
+		assertEquals(it.next().getKey().intValue(), 6);
+		assertTrue(it.hasNext());
+		assertEquals(it.next().getKey().intValue(), 3);
+		assertTrue(it.hasNext());
+		assertEquals(it.next().getKey().intValue(), 2);
+		assertTrue(it.hasNext());
+		assertEquals(it.next().getKey().intValue(), 1);
+		assertFalse(it.hasNext());
+	}
 }

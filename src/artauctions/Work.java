@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * @author Alexandre Peres 61615
  */
-public interface Work extends Serializable {
+public interface Work extends Serializable,Comparable<Work> {
 
     /**
      * Returns the id of an art Work

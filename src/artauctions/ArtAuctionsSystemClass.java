@@ -232,7 +232,7 @@ public class ArtAuctionsSystemClass implements  ArtAuctionsSystem{
     //Phase 2
     @Override
     public void listWorksByValue()
-            throws AuctionWithoutAnySellException {
+            throws NoWorkHasBeenActionedException {
 
     }
 
