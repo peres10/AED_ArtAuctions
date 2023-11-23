@@ -1,5 +1,7 @@
 package artauctions;
 
+import dataStructures.OrderedDictionary;
+
 import java.io.Serializable;
 
 /**
@@ -13,7 +15,7 @@ public interface WorkPrivate extends Work, Serializable {
      *
      * @param value - int with the value the art work was sold
      */
-    void sellArtWork( int value );
+    void sellArtWork( int value, OrderedDictionary<Work,Work> worksSoldOrderedByValue );
 
     /**
      * Increases the creator's of this art work number of works in auction

@@ -1,9 +1,8 @@
 package artauctions;
 
 import artauctions.exceptions.*;
-import dataStructures.DoubleList;
-import dataStructures.Iterator;
-import dataStructures.List;
+import dataStructures.*;
+
 
 /**
  * ArtAuctions System class
@@ -29,6 +28,11 @@ public class ArtAuctionsSystemClass implements  ArtAuctionsSystem{
      */
     private final List<Work> works;
     /**
+     * Ordered dictionary of all works ever sold ordered by their highest
+     * sell value, and if the sell value is the same they are ordered by their name
+     */
+    private final OrderedDictionary<Work,Work> worksSoldOrderedByValue;
+    /**
      * Minimum age for a user to be registered
      */
     private static final int MINIMUM_AGE = 18;
@@ -39,6 +43,7 @@ public class ArtAuctionsSystemClass implements  ArtAuctionsSystem{
         users = new DoubleList<>();
         auctions = new DoubleList<>();
         works = new DoubleList<>();
+        worksSoldOrderedByValue = new AVLTree<>();
     }
 
     @Override
@@ -191,7 +196,7 @@ public class ArtAuctionsSystemClass implements  ArtAuctionsSystem{
         if( auction == null )
             throw new AuctionNotExistsException();
 
-        return auction.closeAuction();
+        return ((AuctionPrivate)auction).closeAuction( worksSoldOrderedByValue );
     }
 
     @Override
@@ -207,11 +212,23 @@ public class ArtAuctionsSystemClass implements  ArtAuctionsSystem{
         return auction.worksInAuctionIterator();
     }
 
-    //Phase 2
     @Override
-    public void listArtistWorks()
+    public Iterator<Entry<String , Work>> listArtistWorks( String login )
             throws UserNotExistsException, ArtistNotExistsException, ArtistWithoutWorksException {
+        User userArtist = searchUser( login );
+        if ( userArtist == null)
+            throw new UserNotExistsException();
 
+        if ( !(userArtist instanceof Artist) )
+            throw new ArtistNotExistsException();
+
+        Artist artist = (Artist)userArtist;
+
+        Iterator<Entry<String ,Work>> it = artist.worksIterator();
+        if ( !it.hasNext() )
+            throw new ArtistWithoutWorksException();
+
+        return it;
     }
 
     @Override
@@ -229,11 +246,13 @@ public class ArtAuctionsSystemClass implements  ArtAuctionsSystem{
 
     }
 
-    //Phase 2
     @Override
-    public void listWorksByValue()
+    public Iterator<Entry<Work,Work>> listWorksByValue()
             throws NoWorkHasBeenActionedException {
+        if(worksSoldOrderedByValue.isEmpty())
+            throw new NoWorkHasBeenActionedException();
 
+        return worksSoldOrderedByValue.iterator();
     }
 
 
@@ -294,11 +313,12 @@ public class ArtAuctionsSystemClass implements  ArtAuctionsSystem{
      * @param creator - Artist object, that must be valid, that may have works made by him
      */
     private void removeAllWorksFromAnArtist( Artist creator ){
-        Iterator<Work> it = creator.worksIterator();
+        Iterator<Entry<String,Work>> it = creator.worksIterator();
         Work work;
         while(it.hasNext()){
-            work = it.next();
+            work = it.next().getValue();
             works.remove(work);
+            worksSoldOrderedByValue.remove(work);
         }
     }
 }

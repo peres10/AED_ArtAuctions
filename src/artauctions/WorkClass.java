@@ -1,5 +1,7 @@
 package artauctions;
 
+import dataStructures.OrderedDictionary;
+
 /**
  * @author Alexandre Peres 61615
  */
@@ -35,7 +37,10 @@ public class WorkClass implements WorkPrivate{
      * Work's highest sale value
      */
     private int highestSaleValue;
-
+    /**
+     * If the work of art has ever been sold
+     */
+    private boolean hasBeenSold;
 
     /**
      * WorkClass constructor
@@ -52,6 +57,7 @@ public class WorkClass implements WorkPrivate{
         this.name = name;
         this.lastSaleValue = 0;
         this.highestSaleValue = 0;
+        this.hasBeenSold = false;
     }
 
 
@@ -96,11 +102,27 @@ public class WorkClass implements WorkPrivate{
     }
 
     @Override
-    public void sellArtWork( int value ) {
-        if( value > highestSaleValue)
-            highestSaleValue = value;
-        lastSaleValue = value;
+    public boolean haveHasEverBeenSold() {
+        return hasBeenSold;
     }
+
+    @Override
+    public void sellArtWork( int value, OrderedDictionary<Work,Work> worksSoldOrderedByValue ) {
+        if(!hasBeenSold) {
+            hasBeenSold = true;
+            highestSaleValue = value;
+            lastSaleValue = value;
+            worksSoldOrderedByValue.insert(this,this);
+        } else if( value > highestSaleValue) {
+            worksSoldOrderedByValue.remove(this);
+            highestSaleValue = value;
+            lastSaleValue = value;
+            worksSoldOrderedByValue.insert(this,this);
+        } else
+            lastSaleValue = value;
+
+    }
+
 
     @Override
     public void addToAnAuction() {

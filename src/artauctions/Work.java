@@ -70,5 +70,10 @@ public interface Work extends Serializable,Comparable<Work> {
      */
     int getHighestSaleValue();
 
-
+    /**
+     * Returns if a work of art has have been sold atleast once
+     *
+     * @return - boolean with true if has been sold, false if not
+     */
+    boolean haveHasEverBeenSold();
 }

@@ -1,8 +1,6 @@
 package artauctions;
 
-import dataStructures.DoubleList;
-import dataStructures.Iterator;
-import dataStructures.List;
+import dataStructures.*;
 
 /**
  * @author Alexandre Peres 61615
@@ -24,7 +22,7 @@ public class ArtistClass extends UserClass implements ArtistPrivate {
     /**
      * List of works made by the artist
      */
-    private final List<Work> works;
+    private final OrderedDictionary<String,Work> works;
 
     /**
      * ArtistClass constructor
@@ -38,7 +36,7 @@ public class ArtistClass extends UserClass implements ArtistPrivate {
         super(login, name, age, email);
         this.artisticName = artisticName;
         this.numberOfAuctionWorks = 0;
-        this.works = new DoubleList<>();
+        this.works = new AVLTree<>();
     }
 
     @Override
@@ -52,7 +50,7 @@ public class ArtistClass extends UserClass implements ArtistPrivate {
     }
 
     @Override
-    public Iterator<Work> worksIterator() {
+    public Iterator<Entry<String,Work>> worksIterator() {
         return works.iterator();
     }
 
@@ -68,6 +66,6 @@ public class ArtistClass extends UserClass implements ArtistPrivate {
 
     @Override
     public void addWork(Work work) {
-        works.addLast(work);
+        works.insert(work.getName(),work);
     }
 }

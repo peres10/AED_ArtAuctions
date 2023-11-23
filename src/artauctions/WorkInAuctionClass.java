@@ -5,6 +5,7 @@ import artauctions.exceptions.WorkWithoutBidsException;
 import dataStructures.DoubleList;
 import dataStructures.Iterator;
 import dataStructures.List;
+import dataStructures.OrderedDictionary;
 
 /**
  * @author Alexandre Peres 61615
@@ -90,9 +91,10 @@ public class WorkInAuctionClass implements WorkInAuctionPrivate {
     }
 
     @Override
-    public void endAuction() {
+    public void endAuction( OrderedDictionary<Work,Work> worksSoldOrderedByValue ) {
         if(highestBid != null) {
-            work.sellArtWork( highestBid.getValue() );
+            work.sellArtWork( highestBid.getValue(), worksSoldOrderedByValue );
+
             wasSold = true;
         }
 

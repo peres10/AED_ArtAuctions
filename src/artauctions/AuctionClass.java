@@ -6,6 +6,7 @@ import artauctions.exceptions.WorkWithoutBidsException;
 import dataStructures.DoubleList;
 import dataStructures.Iterator;
 import dataStructures.List;
+import dataStructures.OrderedDictionary;
 
 /**
  * @author Alexandre Peres 61615
@@ -58,8 +59,8 @@ public class AuctionClass implements AuctionPrivate{
     }
 
     @Override
-    public Iterator<WorkInAuction> closeAuction() {
-        endEachWorkInAuction();
+    public Iterator<WorkInAuction> closeAuction( OrderedDictionary<Work,Work> worksSoldOrderedByValue ) {
+        endEachWorkInAuction( worksSoldOrderedByValue );
         return worksInAuction.iterator();
     }
 
@@ -101,12 +102,12 @@ public class AuctionClass implements AuctionPrivate{
     /**
      * Process all works in the end of an auction
      */
-    private void endEachWorkInAuction(){
+    private void endEachWorkInAuction( OrderedDictionary<Work,Work> worksSoldOrderedByValue ){
         Iterator<WorkInAuction> it = worksInAuction.iterator();
         WorkInAuction workInAuctionObj;
         while(it.hasNext()){
             workInAuctionObj = it.next();
-            ((WorkInAuctionPrivate)workInAuctionObj).endAuction();
+            ((WorkInAuctionPrivate)workInAuctionObj).endAuction( worksSoldOrderedByValue );
         }
     }
 }

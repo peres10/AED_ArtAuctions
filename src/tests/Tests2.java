@@ -1,7 +1,7 @@
 package tests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -10,15 +10,15 @@ import java.io.PrintStream;
 import java.nio.file.Files;
 import java.util.Locale;
 
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 /**
  * A classe Tests especifica um conjunto de testes implementado recorrendo 'a ferramenta
  * JUnit. Estes testes usam como input os ficheiros de teste do Mooshak, gerando, como
  * output, o resultado esperado na execucao desses testes.
  */
-public class Tests {
+public class Tests2 {
     /**
      * Use as linhas que se seguem para especificar os testes que vai realizar.
      * Neste ficheiro de exemplo, criado para o projecto ContactBook, apenas temos
@@ -27,13 +27,12 @@ public class Tests {
      * 1_in_base.txt 'e 1_out_base.txt . Nao tem de fazer mais nada no resto da classe.
      * Basta configurar esta sequencia de testes!
      */
-    @Test public void test1() { test("fase1/1_in.txt","fase1/1_out.txt"); }
-    @Test public void test2() { test("fase1/2_in.txt","fase1/2_out.txt"); }
-    @Test public void test3() { test("fase1/3_in.txt","fase1/3_out.txt"); }
-    @Test public void test4() { test("fase1/4_in.txt","fase1/4_out.txt"); }
-    @Test public void test5() { test("fase1/5_in.txt","fase1/5_out.txt"); }
-    @Test public void test6() { test("fase1/6_in.txt","fase1/6_out.txt"); }
-    @Test public void test7() { test("fase1/7_in.txt","fase1/7_out.txt"); }
+    @Test public void test1() { test("fase2/1_in.txt","fase2/1_out.txt"); }
+    @Test public void test2() { test("fase2/2_in.txt","fase2/2_out.txt"); }
+    @Test public void test3() { test("fase2/3_in.txt","fase2/3_out.txt"); }
+    @Test public void test4() { test("fase2/4_in.txt","fase2/4_out.txt"); }
+    @Test public void test5() { test("fase2/5_in.txt","fase2/5_out.txt"); }
+
 
 
 

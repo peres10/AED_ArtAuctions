@@ -1,5 +1,6 @@
 package artauctions;
 
+import dataStructures.Entry;
 import dataStructures.Iterator;
 
 /**
@@ -26,6 +27,6 @@ public interface Artist extends User {
      *
      * @return - Iterator with all the works made by the artist
      */
-    Iterator<Work> worksIterator();
+    Iterator<Entry<String,Work>> worksIterator();
 
 }

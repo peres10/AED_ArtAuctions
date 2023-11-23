@@ -1,6 +1,7 @@
 package artauctions;
 
 import artauctions.exceptions.*;
+import dataStructures.Entry;
 import dataStructures.Iterator;
 
 import java.io.Serializable;
@@ -153,7 +154,7 @@ public interface ArtAuctionsSystem extends Serializable {
             throws AuctionNotExistsException, AuctionEmptyException;
 
     //Phase 2
-    void listArtistWorks( )
+    Iterator<Entry<String , Work>> listArtistWorks(String login )
             throws UserNotExistsException, ArtistNotExistsException, ArtistWithoutWorksException;
 
     /**
@@ -170,6 +171,6 @@ public interface ArtAuctionsSystem extends Serializable {
             throws AuctionNotExistsException, WorkNotInAuctionException, WorkWithoutBidsException;
 
     //Phase 2
-    void listWorksByValue( )
+    Iterator<Entry<Work,Work>> listWorksByValue( )
             throws NoWorkHasBeenActionedException;
 }

@@ -1,6 +1,7 @@
 package artauctions;
 
 import artauctions.exceptions.BidValueUnderMinValueException;
+import dataStructures.OrderedDictionary;
 
 import java.io.Serializable;
 
@@ -13,7 +14,7 @@ public interface WorkInAuctionPrivate extends WorkInAuction, Serializable {
      * Ends the auction on this specific artwork and does all the processes
      * to determine the sale value or if it was not sold
      */
-    void endAuction();
+    void endAuction( OrderedDictionary<Work,Work> worksSoldOrderedByValue );
 
 
     /**

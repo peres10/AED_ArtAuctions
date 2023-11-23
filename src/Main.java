@@ -1,5 +1,6 @@
 import artauctions.*;
 import artauctions.exceptions.*;
+import dataStructures.Entry;
 import dataStructures.Iterator;
 
 import java.io.*;
@@ -44,6 +45,7 @@ public class Main {
         LIST_WORKS_ARTIST( "%s %s %d %d\n" ),
         LIST_BIDS( "%s %s %d\n" ),
         LIST_WORKS( "%s %s %d %d %s %s\n" ),
+        LIST_WORKS_OF_ARTIST ( "%s %s %d %d\n" ),
         QUIT( "Obrigado. Ate a proxima." )
         ;
 
@@ -339,7 +341,7 @@ public class Main {
         try{
             Work work = data.infoWork( idWork );
             System.out.printf( Msg.WORK_INFO.getMsg(), work.getId(), work.getName(), work.getYear(),
-                    work.getLastSaleValue(), work.getCreatorLogin(), work.getCreatorName() );
+                    work.getHighestSaleValue(), work.getCreatorLogin(), work.getCreatorName() );
         } catch (WorkNotExistsException e) {
             System.out.println( ErrorMsg.WORK_NOT_EXISTS.getMsg() );
         }
@@ -484,9 +486,14 @@ public class Main {
         String login = in.next();
         in.nextLine();
 
-        //TODO
         try{
-            data.listArtistWorks();
+            Iterator<Entry<String ,Work>> it = data.listArtistWorks(login);
+            Work work;
+            while(it.hasNext()){
+                work = it.next().getValue();
+                System.out.printf(Msg.LIST_WORKS_OF_ARTIST.getMsg(), work.getId(), work.getName(), work.getYear(),
+                            work.getHighestSaleValue() );
+            }
         } catch (UserNotExistsException e) {
             System.out.println( ErrorMsg.USER_NOT_EXISTS.getMsg() );
         } catch (ArtistNotExistsException e) {
@@ -528,9 +535,14 @@ public class Main {
      * @param data - ArtAuctions data
      */
     private static void listWorksByValue( ArtAuctionsSystem data ){
-        //TODO
         try{
-            data.listWorksByValue();
+            Iterator<Entry<Work,Work>> it = data.listWorksByValue();
+            Work work;
+            while (it.hasNext()){
+                work = it.next().getValue();
+                System.out.printf( Msg.LIST_WORKS.getMsg(), work.getId(), work.getName(), work.getYear() ,work.getHighestSaleValue(),
+                        work.getCreatorLogin(), work.getCreatorName());
+            }
         } catch (NoWorkHasBeenActionedException e) {
             System.out.println( ErrorMsg.NO_WORK_HAS_BEEN_ACTIONED.getMsg() );
         }

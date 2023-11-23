@@ -16,7 +16,7 @@ public class ProjectTests {
 
         Artist artist1 = new ArtistClass("artist1","artist1",21,"tt@gm.cim","The Artist");
         WorkPrivate work1 = new WorkClass("ABC",artist1,2001,"Aaaaa");
-        work1.sellArtWork(15);
+        //work1.sellArtWork(15);
         assertEquals(15, work1.getHighestSaleValue());
 
         works.insert(work1,work1);
@@ -33,17 +33,17 @@ public class ProjectTests {
 
         Artist artist1 = new ArtistClass("artist1","artist1",21,"tt@gm.cim","The Artist");
         WorkPrivate work1 = new WorkClass("ABC",artist1,2001,"Aaaaa");
-        work1.sellArtWork(15);
+        //work1.sellArtWork(15);
         WorkPrivate work2 = new WorkClass("ABC",artist1,2001,"Aba");
-        work2.sellArtWork(15);
+        //work2.sellArtWork(15);
         WorkPrivate work3 = new WorkClass("ABC",artist1,2001,"work3");
-        work3.sellArtWork(100);
+        //work3.sellArtWork(100);
         WorkPrivate work4 = new WorkClass("ABC",artist1,2001,"work4");
-        work4.sellArtWork(7);
+        //work4.sellArtWork(7);
         WorkPrivate work5 = new WorkClass("ABC",artist1,2001,"work5");
-        work5.sellArtWork(2);
+        //work5.sellArtWork(2);
         WorkPrivate work6 = new WorkClass("ABC",artist1,2001,"wokr6");
-        work6.sellArtWork(200);
+        //work6.sellArtWork(200);
 
         works.insert(work1,work1);
         works.insert(work2,work2);
@@ -69,7 +69,7 @@ public class ProjectTests {
         assertFalse(it.hasNext());
 
         works.remove(work5);
-        work5.sellArtWork(500);
+        //work5.sellArtWork(500);
         works.insert(work5,work5);
 
         Iterator<Entry<Work, Work>> it2 = works.iterator();

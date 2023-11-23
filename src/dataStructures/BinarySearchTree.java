@@ -354,7 +354,8 @@ public class BinarySearchTree<K extends Comparable<K>, V>
                 throw new NoSuchElementException();
 
             BSTNode<K,V> node = nextNodes.pop();
-            pushLeftNodes(node.getRight());
+            if(node.getRight() != null)
+                pushLeftNodes(node.getRight());
 
             return node.getEntry();
         }
