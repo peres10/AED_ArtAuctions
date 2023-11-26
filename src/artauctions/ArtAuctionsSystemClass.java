@@ -18,15 +18,15 @@ public class ArtAuctionsSystemClass implements  ArtAuctionsSystem{
     /**
      * List containing every User in the system
      */
-    private final List<User> users;
+    private final Dictionary<String,User> users;
     /**
      * List containing every Auction in the system
      */
-    private final List<Auction> auctions;
+    private final Dictionary<String,Auction> auctions;
     /**
      * List containing every Work in the system
      */
-    private final List<Work> works;
+    private final Dictionary<String,Work> works;
     /**
      * Ordered dictionary of all works ever sold ordered by their highest
      * sell value, and if the sell value is the same they are ordered by their name
@@ -40,10 +40,10 @@ public class ArtAuctionsSystemClass implements  ArtAuctionsSystem{
      * ArtAuctionsSystemClass constructor
      */
     public ArtAuctionsSystemClass(){
-        users = new DoubleList<>();
-        auctions = new DoubleList<>();
-        works = new DoubleList<>();
-        worksSoldOrderedByValue = new AVLTree<>();
+        users = new SepChainHashTable<>();
+        auctions = new SepChainHashTable<>();
+        works = new SepChainHashTable<>();
+        worksSoldOrderedByValue = new OrderedDoubleList<>();
     }
 
     @Override
@@ -52,10 +52,10 @@ public class ArtAuctionsSystemClass implements  ArtAuctionsSystem{
         if( age < MINIMUM_AGE )
             throw new UnderageUserException();
 
-        if( searchUser(login) != null )
+        if( users.find(login) != null )
             throw new UserAlreadyExistsException();
 
-        users.addLast( new UserClass( login, name, age, email ));
+        users.insert( login , new UserClass( login, name, age, email ) );
     }
 
     @Override
@@ -64,16 +64,17 @@ public class ArtAuctionsSystemClass implements  ArtAuctionsSystem{
         if( age < MINIMUM_AGE )
             throw new UnderageUserException();
 
-        if( searchUser(login) != null )
+        if( users.find(login) != null )
             throw new UserAlreadyExistsException();
 
-        users.addLast( new ArtistClass( login, name, age, email, artisticName ));
+        //users.addLast( new ArtistClass( login, name, age, email, artisticName ));
+        users.insert( login, new ArtistClass( login, name, age, email, artisticName) );
     }
 
     @Override
     public void removeUser( String login )
             throws UserNotExistsException, UserHasActiveBidsException, UserHasWorksAuctionedException {
-        User user = searchUser(login);
+        User user = users.find( login );
 
         if ( user == null )
             throw new UserNotExistsException();
@@ -88,17 +89,17 @@ public class ArtAuctionsSystemClass implements  ArtAuctionsSystem{
             removeAllWorksFromAnArtist( artist );
         }
 
-        users.remove( user );
+        users.remove( login );
     }
 
     @Override
     public void addWork( String idWork, String loginCreator, int year, String name )
             throws WorkAlreadyExistsException, UserNotExistsException, ArtistNotExistsException {
-        if( searchWork(idWork) != null)
+        if( works.find(idWork) != null)
             throw new WorkAlreadyExistsException();
 
-        User userCreator = searchUser( loginCreator );
-        if ( userCreator == null)
+        User userCreator = users.find( loginCreator );
+        if ( userCreator == null )
             throw new UserNotExistsException();
 
         if ( !(userCreator instanceof Artist) )
@@ -109,13 +110,13 @@ public class ArtAuctionsSystemClass implements  ArtAuctionsSystem{
         Work newWork = new WorkClass( idWork, artist, year, name );
 
         artist.addWork( newWork );
-        works.addLast( newWork );
+        works.insert( idWork,newWork );
     }
 
     @Override
     public User infoUser( String login )
             throws UserNotExistsException {
-        User user = searchUser( login );
+        User user = users.find( login );
 
         if( user == null )
             throw new UserNotExistsException();
@@ -126,7 +127,7 @@ public class ArtAuctionsSystemClass implements  ArtAuctionsSystem{
     @Override
     public Artist infoArtist( String login )
             throws UserNotExistsException, ArtistNotExistsException {
-        User user = searchUser( login );
+        User user = users.find( login );
         if( user == null )
             throw new UserNotExistsException();
 
@@ -140,7 +141,7 @@ public class ArtAuctionsSystemClass implements  ArtAuctionsSystem{
     @Override
     public Work infoWork( String idWork )
             throws WorkNotExistsException {
-        Work work = searchWork( idWork );
+        Work work = works.find( idWork );
         if( work == null )
             throw new WorkNotExistsException();
 
@@ -150,21 +151,21 @@ public class ArtAuctionsSystemClass implements  ArtAuctionsSystem{
     @Override
     public void createAuction( String idAuction )
             throws AuctionAlreadyExistsException {
-        Auction auction = searchAuction( idAuction );
+        Auction auction = auctions.find( idAuction );
         if( auction != null )
             throw new AuctionAlreadyExistsException();
 
-        auctions.addLast( new AuctionClass(idAuction) );
+        auctions.insert( idAuction, new AuctionClass(idAuction) );
     }
 
     @Override
     public void addWorkAuction( String idAuction, String idWork, int minValue )
             throws AuctionNotExistsException, WorkNotExistsException {
-        AuctionPrivate auction = (AuctionPrivate)searchAuction( idAuction );
-        if( auction == null)
+        AuctionPrivate auction = (AuctionPrivate) auctions.find( idAuction );
+        if( auction == null )
             throw new AuctionNotExistsException();
 
-        WorkPrivate work = (WorkPrivate) searchWork( idWork );
+        WorkPrivate work = (WorkPrivate) works.find( idWork );
         if( work == null )
             throw new WorkNotExistsException();
 
@@ -174,15 +175,15 @@ public class ArtAuctionsSystemClass implements  ArtAuctionsSystem{
     @Override
     public void bid( String idAuction, String idWork, String login, int value )
             throws AuctionNotExistsException, WorkNotInAuctionException, UserNotExistsException, BidValueUnderMinValueException {
-        User user = searchUser( login );
+        User user = users.find( login );
         if( user == null )
             throw new UserNotExistsException();
 
-        Auction auction = searchAuction( idAuction );
+        Auction auction = auctions.find( idAuction );
         if( auction == null )
             throw new AuctionNotExistsException();
 
-        Work work = searchWork( idWork );
+        Work work = works.find( idWork );
         if( work == null )
             throw new WorkNotInAuctionException();
 
@@ -192,7 +193,7 @@ public class ArtAuctionsSystemClass implements  ArtAuctionsSystem{
     @Override
     public Iterator<WorkInAuction> closeAuction( String idAuction )
             throws AuctionNotExistsException {
-        Auction auction = searchAuction( idAuction );
+        Auction auction = auctions.find( idAuction );
         if( auction == null )
             throw new AuctionNotExistsException();
 
@@ -202,7 +203,7 @@ public class ArtAuctionsSystemClass implements  ArtAuctionsSystem{
     @Override
     public Iterator<WorkInAuction> listAuctionWorks( String idAuction )
             throws AuctionNotExistsException, AuctionEmptyException {
-        Auction auction = searchAuction( idAuction );
+        Auction auction = auctions.find( idAuction );
         if( auction == null )
             throw new AuctionNotExistsException();
 
@@ -215,7 +216,7 @@ public class ArtAuctionsSystemClass implements  ArtAuctionsSystem{
     @Override
     public Iterator<Entry<String , Work>> listArtistWorks( String login )
             throws UserNotExistsException, ArtistNotExistsException, ArtistWithoutWorksException {
-        User userArtist = searchUser( login );
+        User userArtist = users.find( login );
         if ( userArtist == null)
             throw new UserNotExistsException();
 
@@ -234,11 +235,11 @@ public class ArtAuctionsSystemClass implements  ArtAuctionsSystem{
     @Override
     public Iterator<Bid> listBidsWork( String idAuction, String idWork )
             throws AuctionNotExistsException, WorkNotInAuctionException, WorkWithoutBidsException {
-        Auction auction = searchAuction( idAuction );
+        Auction auction = auctions.find( idAuction );
         if( auction == null )
             throw new AuctionNotExistsException();
 
-        Work work = searchWork( idWork );
+        Work work = works.find( idWork );
         if( work == null )
             throw new WorkNotInAuctionException();
 
@@ -257,57 +258,6 @@ public class ArtAuctionsSystemClass implements  ArtAuctionsSystem{
 
 
     /**
-     * Searches for a user in the List of users and returns it if exists
-     *
-     * @param login - login of a User
-     * @return - if a User exists returns it, if not returns null
-     */
-    private User searchUser( String login ){
-        Iterator<User> it = users.iterator();
-        User user;
-        while(it.hasNext()){
-            user = it.next();
-            if(user.getLogin().equalsIgnoreCase(login))
-                return user;
-        }
-        return null;
-    }
-
-    /**
-     * Searches for a work in the List of works and returns it if exists
-     *
-     * @param id - id of Work
-     * @return - if a Work exists returns it, if not returns null
-     */
-    private Work searchWork( String id ){
-        Iterator<Work> it = works.iterator();
-        Work work;
-        while(it.hasNext()){
-            work = it.next();
-            if(work.getId().equalsIgnoreCase(id))
-                return work;
-        }
-        return null;
-    }
-
-    /**
-     * Searches for an auction in the List of auction and returns it if exists
-     *
-     * @param id - id of Auction
-     * @return - if a Auction exists returns it, if not returns null
-     */
-    private Auction searchAuction( String id ){
-        Iterator<Auction> it = auctions.iterator();
-        Auction auction;
-        while(it.hasNext()){
-            auction = it.next();
-            if(auction.getId().equalsIgnoreCase(id))
-                return auction;
-        }
-        return null;
-    }
-
-    /**
      * Removes all works that were made by a specific user
      *
      * @param creator - Artist object, that must be valid, that may have works made by him
@@ -317,7 +267,7 @@ public class ArtAuctionsSystemClass implements  ArtAuctionsSystem{
         Work work;
         while(it.hasNext()){
             work = it.next().getValue();
-            works.remove(work);
+            works.remove(work.getId());
             worksSoldOrderedByValue.remove(work);
         }
     }
