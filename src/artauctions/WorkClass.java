@@ -10,7 +10,7 @@ public class WorkClass implements WorkPrivate{
     /**
      * Serial Version UID of the class
      */
-    static final long serialVersionUID = 0L;
+    private static final long serialVersionUID = 0L;
 
     /**
      * Work's id
@@ -50,7 +50,7 @@ public class WorkClass implements WorkPrivate{
      * @param year - Work's year
      * @param name - Work's name
      */
-    public WorkClass( String idWork, Artist creator, int year, String name){
+    public WorkClass( String idWork, Artist creator, int year, String name ){
         this.id = idWork;
         this.creator = creator;
         this.year = year;
@@ -108,37 +108,38 @@ public class WorkClass implements WorkPrivate{
 
     @Override
     public void sellArtWork( int value, OrderedDictionary<Work,Work> worksSoldOrderedByValue ) {
-        if(!hasBeenSold) {
-            hasBeenSold = true;
+        if(hasBeenSold && value < highestSaleValue){
+            lastSaleValue = value;
+        } else {
+            if(hasBeenSold) {
+                worksSoldOrderedByValue.remove(this);
+            } else {
+                hasBeenSold = true;
+            }
             highestSaleValue = value;
             lastSaleValue = value;
             worksSoldOrderedByValue.insert(this,this);
-        } else if( value > highestSaleValue) {
-            worksSoldOrderedByValue.remove(this);
-            highestSaleValue = value;
-            lastSaleValue = value;
-            worksSoldOrderedByValue.insert(this,this);
-        } else
-            lastSaleValue = value;
-
+        }
     }
-
 
     @Override
     public void addToAnAuction() {
-        ((ArtistPrivate)creator).auctionWork();
+        ArtistPrivate artistP = (ArtistPrivate) creator;
+        artistP.auctionWork();
     }
 
     @Override
     public void removeFromAnAuction() {
-        ((ArtistPrivate)creator).closeAuctionWork();
+        ArtistPrivate artistP = (ArtistPrivate) creator;
+        artistP.closeAuctionWork();
     }
 
+    //orders from highest sale value to lowest sale value, if it draws then it's order by name
     @Override
-    public int compareTo(Work o) {
+    public int compareTo( Work o ) {
         if(highestSaleValue > o.getHighestSaleValue())
             return -1;
-        else if(highestSaleValue < o.getLastSaleValue())
+        else if(highestSaleValue < o.getHighestSaleValue())
             return 1;
         else
             return name.compareTo(o.getName());

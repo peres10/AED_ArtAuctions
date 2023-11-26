@@ -49,12 +49,6 @@ public interface Work extends Serializable,Comparable<Work> {
      */
     String getName();
 
-    /**
-     * Gets if a the art work has ever been sold
-     *
-     * @return - boolean, true if has ever been sold, false if not
-     */
-    //boolean getIfHasBeenSoldOnce();
 
     /**
      * Returns the value of the last sale of the art work

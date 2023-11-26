@@ -32,11 +32,16 @@ public class BidClass implements BidPrivate{
 
     @Override
     public void removeBidFromUser() {
-        ((UserPrivate)user).removeBid();
+        UserPrivate userSetter = (UserPrivate)user;
+        userSetter.removeBid();
     }
 
+    /**
+     * Makes changes in the user so it know it bidded on an auction
+     */
     private void addBidToUser(){
-        ((UserPrivate)user).bidOnWorkOfArt();
+        UserPrivate userSetter = (UserPrivate)user;
+        userSetter.bidOnWorkOfArt();
     }
 
     @Override

@@ -99,15 +99,18 @@ public class AuctionClass implements AuctionPrivate{
         return null;
     }
 
+
     /**
      * Process all works in the end of an auction
+     *
+     * @param worksSoldOrderedByValue - the ordered dicitonary of the works ordered by value
      */
     private void endEachWorkInAuction( OrderedDictionary<Work,Work> worksSoldOrderedByValue ){
         Iterator<WorkInAuction> it = worksInAuction.iterator();
-        WorkInAuction workInAuctionObj;
+        WorkInAuctionPrivate workInAuctionObj;
         while(it.hasNext()){
-            workInAuctionObj = it.next();
-            ((WorkInAuctionPrivate)workInAuctionObj).endAuction( worksSoldOrderedByValue );
+            workInAuctionObj = (WorkInAuctionPrivate) it.next();
+            workInAuctionObj.endAuction( worksSoldOrderedByValue );
         }
     }
 }

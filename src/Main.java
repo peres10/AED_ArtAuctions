@@ -42,7 +42,6 @@ public class Main {
         SOLD_WORK_AUCTION( "%s %s %s %s %d\n" ),
         REMAIN_WORK_AUCTION( "%s %s sem propostas de venda.\n" ),
         LIST_WORKS_AUCTION( "%s %s %d %d %s %s\n" ),
-        LIST_WORKS_ARTIST( "%s %s %d %d\n" ),
         LIST_BIDS( "%s %s %d\n" ),
         LIST_WORKS( "%s %s %d %d %s %s\n" ),
         LIST_WORKS_OF_ARTIST ( "%s %s %d %d\n" ),
@@ -540,8 +539,8 @@ public class Main {
             Work work;
             while (it.hasNext()){
                 work = it.next().getValue();
-                System.out.printf( Msg.LIST_WORKS.getMsg(), work.getId(), work.getName(), work.getYear() ,work.getHighestSaleValue(),
-                        work.getCreatorLogin(), work.getCreatorName());
+                System.out.printf( Msg.LIST_WORKS.getMsg(), work.getId(), work.getName(), work.getYear() ,
+                        work.getHighestSaleValue(), work.getCreatorLogin(), work.getCreatorName() );
             }
         } catch (NoWorkHasBeenActionedException e) {
             System.out.println( ErrorMsg.NO_WORK_HAS_BEEN_ACTIONED.getMsg() );

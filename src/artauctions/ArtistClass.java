@@ -20,7 +20,7 @@ public class ArtistClass extends UserClass implements ArtistPrivate {
      */
     private int numberOfAuctionWorks;
     /**
-     * List of works made by the artist
+     * Ordered dictionary of works made by the artist
      */
     private final OrderedDictionary<String,Work> works;
 
@@ -66,6 +66,6 @@ public class ArtistClass extends UserClass implements ArtistPrivate {
 
     @Override
     public void addWork(Work work) {
-        works.insert(work.getName(),work);
+        works.insert( work.getName() , work );
     }
 }

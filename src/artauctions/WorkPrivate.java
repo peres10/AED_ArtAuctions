@@ -14,6 +14,7 @@ public interface WorkPrivate extends Work, Serializable {
      * sets the last sale value, and if needed sets the new highest sale value
      *
      * @param value - int with the value the art work was sold
+     * @param worksSoldOrderedByValue - the ordered dicitonary of the works ordered by value
      */
     void sellArtWork( int value, OrderedDictionary<Work,Work> worksSoldOrderedByValue );
 

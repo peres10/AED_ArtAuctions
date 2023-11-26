@@ -24,9 +24,10 @@ public interface AuctionPrivate extends Auction, Serializable {
      * Closes and auction and processes all works in that auction
      * in the end of it
      *
+     * @param worksSoldOrderedByValue - the ordered dicitonary of the works ordered by value
      * @return - Iterator of WorkInAuction with all works in the auction
      */
-    Iterator<WorkInAuction> closeAuction(OrderedDictionary<Work,Work> worksSoldOrderedByValue);
+    Iterator<WorkInAuction> closeAuction( OrderedDictionary<Work,Work> worksSoldOrderedByValue );
 
     /**
      * Bids on a art work in the auction

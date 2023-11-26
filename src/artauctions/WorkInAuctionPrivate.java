@@ -13,6 +13,8 @@ public interface WorkInAuctionPrivate extends WorkInAuction, Serializable {
     /**
      * Ends the auction on this specific artwork and does all the processes
      * to determine the sale value or if it was not sold
+     *
+     * @param worksSoldOrderedByValue - the ordered dicitonary of the works ordered by value
      */
     void endAuction( OrderedDictionary<Work,Work> worksSoldOrderedByValue );
 

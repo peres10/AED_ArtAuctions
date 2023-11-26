@@ -16,15 +16,15 @@ public class ArtAuctionsSystemClass implements  ArtAuctionsSystem{
      */
     private static final long serialVersionUID = 0L;
     /**
-     * List containing every User in the system
+     * Dictionary containing every User in the system
      */
     private final Dictionary<String,User> users;
     /**
-     * List containing every Auction in the system
+     * Dictionary containing every Auction in the system
      */
     private final Dictionary<String,Auction> auctions;
     /**
-     * List containing every Work in the system
+     * Dictionary containing every Work in the system
      */
     private final Dictionary<String,Work> works;
     /**
@@ -43,7 +43,7 @@ public class ArtAuctionsSystemClass implements  ArtAuctionsSystem{
         users = new SepChainHashTable<>();
         auctions = new SepChainHashTable<>();
         works = new SepChainHashTable<>();
-        worksSoldOrderedByValue = new OrderedDoubleList<>();
+        worksSoldOrderedByValue = new AVLTree<>();
     }
 
     @Override
@@ -52,7 +52,7 @@ public class ArtAuctionsSystemClass implements  ArtAuctionsSystem{
         if( age < MINIMUM_AGE )
             throw new UnderageUserException();
 
-        if( users.find(login) != null )
+        if( users.find (login ) != null )
             throw new UserAlreadyExistsException();
 
         users.insert( login , new UserClass( login, name, age, email ) );
@@ -64,10 +64,9 @@ public class ArtAuctionsSystemClass implements  ArtAuctionsSystem{
         if( age < MINIMUM_AGE )
             throw new UnderageUserException();
 
-        if( users.find(login) != null )
+        if( users.find( login ) != null )
             throw new UserAlreadyExistsException();
 
-        //users.addLast( new ArtistClass( login, name, age, email, artisticName ));
         users.insert( login, new ArtistClass( login, name, age, email, artisticName) );
     }
 
@@ -82,11 +81,11 @@ public class ArtAuctionsSystemClass implements  ArtAuctionsSystem{
         if ( user.getNumOfActiveBids() > 0 )
             throw new UserHasActiveBidsException();
 
-        if ( user instanceof Artist && ((Artist)user).getNumberOfAuctionWorks() > 0)
+        if ( user instanceof Artist && ((Artist) user).getNumberOfAuctionWorks() > 0)
             throw new UserHasWorksAuctionedException();
 
-        if (user instanceof Artist artist) {
-            removeAllWorksFromAnArtist( artist );
+        if (user instanceof Artist) {
+            removeAllWorksFromAnArtist( (Artist)user );
         }
 
         users.remove( login );
@@ -134,7 +133,9 @@ public class ArtAuctionsSystemClass implements  ArtAuctionsSystem{
         if( !(user  instanceof Artist) )
             throw new ArtistNotExistsException();
 
-        return (Artist)user;
+        Artist artist = (Artist) user;
+
+        return artist;
     }
 
 
@@ -179,7 +180,7 @@ public class ArtAuctionsSystemClass implements  ArtAuctionsSystem{
         if( user == null )
             throw new UserNotExistsException();
 
-        Auction auction = auctions.find( idAuction );
+        AuctionPrivate auction = (AuctionPrivate) auctions.find( idAuction );
         if( auction == null )
             throw new AuctionNotExistsException();
 
@@ -187,17 +188,17 @@ public class ArtAuctionsSystemClass implements  ArtAuctionsSystem{
         if( work == null )
             throw new WorkNotInAuctionException();
 
-        ((AuctionPrivate)auction).bid( work, user, value );
+        auction.bid( work, user, value );
     }
 
     @Override
     public Iterator<WorkInAuction> closeAuction( String idAuction )
             throws AuctionNotExistsException {
-        Auction auction = auctions.find( idAuction );
+        AuctionPrivate auction = (AuctionPrivate) auctions.find( idAuction );
         if( auction == null )
             throw new AuctionNotExistsException();
 
-        return ((AuctionPrivate)auction).closeAuction( worksSoldOrderedByValue );
+        return auction.closeAuction( worksSoldOrderedByValue );
     }
 
     @Override

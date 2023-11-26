@@ -81,7 +81,7 @@ public interface ArtAuctionsSystem extends Serializable {
      * @param login  login of an artist
      * @return - a Artist object of the artist searched
      * @throws UserNotExistsException - if there is no user with login
-     * @throws ArtistNotExistsException - if there is not artist with login
+     * @throws ArtistNotExistsException - if there is no artist with login
      */
     Artist infoArtist( String login )
             throws UserNotExistsException, ArtistNotExistsException;
@@ -153,8 +153,16 @@ public interface ArtAuctionsSystem extends Serializable {
     Iterator<WorkInAuction> listAuctionWorks( String idAuction )
             throws AuctionNotExistsException, AuctionEmptyException;
 
-    //Phase 2
-    Iterator<Entry<String , Work>> listArtistWorks(String login )
+    /**
+     * Returns an iterator of Work's from a specific artist
+     *
+     * @param login - login of the artist
+     * @return - iterator of all works from a Artist
+     * @throws UserNotExistsException - if there is no user with login
+     * @throws ArtistNotExistsException - if there is no artist with login
+     * @throws ArtistWithoutWorksException - if thee artist has no works
+     */
+    Iterator<Entry<String , Work>> listArtistWorks( String login )
             throws UserNotExistsException, ArtistNotExistsException, ArtistWithoutWorksException;
 
     /**
@@ -170,7 +178,12 @@ public interface ArtAuctionsSystem extends Serializable {
     Iterator<Bid> listBidsWork( String idAuction, String idWork )
             throws AuctionNotExistsException, WorkNotInAuctionException, WorkWithoutBidsException;
 
-    //Phase 2
+    /**
+     * Returns an iterator of all works ordered by their highest sale value, and ordered by name
+     *
+     * @return - iterator o Work with works ordered by value and name
+     * @throws NoWorkHasBeenActionedException - if no Work has been sold yet
+     */
     Iterator<Entry<Work,Work>> listWorksByValue( )
             throws NoWorkHasBeenActionedException;
 }
