@@ -405,7 +405,7 @@ public class BinarySearchTree<K extends Comparable<K>, V>
 
         @Override
         public void rewind() {
-            nextNodes = new QueueInArray<>();
+            nextNodes = new QueueInList<>();
             nextNodes.enqueue(root);
         }
     }
