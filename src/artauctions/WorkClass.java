@@ -28,7 +28,6 @@ public class WorkClass implements WorkPrivate{
      * Work's name
      */
     private final String name;
-    //private boolean hasBeenSoldOnce;
     /**
      * Work's last sale value
      */

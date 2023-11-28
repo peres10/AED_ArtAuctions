@@ -12,6 +12,18 @@ import dataStructures.*;
 public class ArtAuctionsSystemClass implements  ArtAuctionsSystem{
 
     /**
+     * Expected number of users
+     */
+    private static final int NUM_OF_USERS = 20000;
+    /**
+     * Expected number of works
+     */
+    private static final int NUM_OF_WORKS = 10000;
+    /**
+     * Expected number of auctions
+     */
+    private static final int NUM_OF_AUCTIONS = 75;
+    /**
      * Serial Version UID of the Class
      */
     private static final long serialVersionUID = 0L;
@@ -40,9 +52,9 @@ public class ArtAuctionsSystemClass implements  ArtAuctionsSystem{
      * ArtAuctionsSystemClass constructor
      */
     public ArtAuctionsSystemClass(){
-        users = new SepChainHashTable<>();
-        auctions = new SepChainHashTable<>();
-        works = new SepChainHashTable<>();
+        users = new SepChainHashTable<>(NUM_OF_USERS);
+        auctions = new SepChainHashTable<>(NUM_OF_AUCTIONS);
+        works = new SepChainHashTable<>(NUM_OF_WORKS);
         worksSoldOrderedByValue = new AVLTree<>();
     }
 
@@ -52,7 +64,7 @@ public class ArtAuctionsSystemClass implements  ArtAuctionsSystem{
         if( age < MINIMUM_AGE )
             throw new UnderageUserException();
 
-        if( users.find (login ) != null )
+        if( users.find ( login ) != null )
             throw new UserAlreadyExistsException();
 
         users.insert( login , new UserClass( login, name, age, email ) );
@@ -198,6 +210,7 @@ public class ArtAuctionsSystemClass implements  ArtAuctionsSystem{
         if( auction == null )
             throw new AuctionNotExistsException();
 
+        auctions.remove( idAuction );
         return auction.closeAuction( worksSoldOrderedByValue );
     }
 
